@@ -58,7 +58,7 @@ This should start the Spark shell. If everything is set up correctly, you should
 Please note that the exact steps might vary slightly depending on the version of macOS and Spark you are using.
 
 
-### Integrate pyspark with PyCharm IDE
+### Integrate PySpark with PyCharm IDE
 
 To integrate PySpark with PyCharm IDE, you need to follow these steps:
 
