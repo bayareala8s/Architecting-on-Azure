@@ -172,3 +172,25 @@ Key Features of Delta Lake include:
 7. **Updates and Deletes**: Delta Lake supports mutating operations like update and delete which is a key requirement for changing data pipelines.
 
 Delta Lake sits on top of your existing data lake and is fully compatible with Apache Spark APIs, allowing you to build robust data pipelines without having to manage the complexities typically associated with big data processing.
+
+
+### Delta Live Tables in DataBricks
+
+
+Delta Live Tables is a feature in Databricks that allows you to build reliable and scalable data pipelines with SQL and Python. It provides a structured way to organize your data transformations and ensure data reliability.
+
+Key features of Delta Live Tables include:
+
+1. **Reliability**: Delta Live Tables ensures data reliability by maintaining exactly-once processing semantics, even in the face of failures.
+
+2. **Scalability**: It can handle large amounts of data and complex workloads.
+
+3. **Simplicity**: You can define your data pipelines using SQL or Python, which are familiar languages for many data professionals.
+
+4. **Maintenance**: Delta Live Tables automatically manages the underlying infrastructure, so you don't have to worry about it.
+
+5. **Versioning**: Every run of a Delta Live Table is versioned, allowing you to reproduce past results and understand how your data has changed over time.
+
+6. **Monitoring**: Delta Live Tables provides built-in monitoring and alerting, so you can understand the health of your data pipelines at a glance.
+
+In summary, Delta Live Tables is a powerful tool for building, managing, and monitoring data pipelines in Databricks.
