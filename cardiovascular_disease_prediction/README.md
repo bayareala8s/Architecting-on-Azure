@@ -98,3 +98,54 @@ df.show()
    - Run the file. If everything is set up correctly, you should see the DataFrame printed in the console.
 
 Please note that the `SPARK_HOME` and `PYTHONPATH` values depend on your Spark installation directory and Py4J version. You need to replace `<version>` with your Py4J version (e.g., `0.10.9`).
+
+
+### Common PySpark transformations
+
+PySpark provides several transformations that can be used to manipulate data in a DataFrame or RDD. Here are some common transformations:
+
+1. `map(func)`: This transformation applies a function to each element in the RDD and returns a new RDD.
+
+2. `filter(func)`: This transformation returns a new RDD by selecting only the elements of the original RDD on which func returns true.
+
+3. `flatMap(func)`: Similar to map, but each input item can be mapped to multiple output items (so function should return a Sequence rather than a single item).
+
+4. `union(dataset)`: This transformation returns a new RDD that contains the union of the elements in the source RDD and the argument.
+
+5. `distinct([numTasks]))`: This transformation returns a new RDD that contains the distinct elements of the source RDD.
+
+6. `groupByKey([numTasks])`: This transformation groups the elements of the RDD according to the key of the PairRDD and returns a new RDD.
+
+7. `reduceByKey(func, [numTasks])`: This transformation groups the elements of the RDD according to the key of the PairRDD and performs a reduce operation on each group using the provided function.
+
+8. `join(otherDataset, [numTasks])`: This transformation joins two PairRDDs based on their key.
+
+9. `cogroup(otherDataset, [numTasks])`: This transformation groups data from both RDDs sharing the same key.
+
+10. `mapPartitions(func)`: Similar to map, but runs separately on each partition (block) of the RDD.
+
+11. `mapPartitionsWithIndex(func)`: Similar to mapPartitions, but also provides a function with an integer value representing the index of the partition.
+
+Remember that transformations in PySpark are lazy, meaning they do not compute their results right away. They just remember the transformations applied to some base dataset. The transformations are only computed when an action requires a result to be returned to the driver program.
+
+
+### Common PySpark actions
+
+
+PySpark provides several actions that can be performed on RDDs (Resilient Distributed Datasets). Here are some common PySpark actions:
+
+1. `collect()`: This action is used to retrieve all the elements of the dataset (RDD/DataFrame/Dataset) from the distributed system to the driver program. It's commonly used when the returned data is expected to fit into the driver program's memory.
+
+2. `count()`: This action returns the count of the elements in the dataset.
+
+3. `first()`: This action returns the first element of the dataset.
+
+4. `take(n)`: This action returns the first 'n' elements of the dataset.
+
+5. `reduce(func)`: This action aggregates the elements of the dataset using a function 'func' which takes two arguments and returns one.
+
+6. `saveAsTextFile(path)`: This action saves the dataset as a text file at the specified path in the local filesystem, HDFS or any other Hadoop-supported file system.
+
+7. `foreach(func)`: This action applies a function 'func' to all elements of the dataset. This is usually done to update an accumulator or interacting with external systems.
+
+Remember, actions in PySpark are the operations that give non-RDD values. They materialize a value in a program. It's the actions that force the evaluation of the transformations (lazy operations) and return values.
