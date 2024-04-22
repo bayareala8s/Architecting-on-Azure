@@ -149,3 +149,26 @@ PySpark provides several actions that can be performed on RDDs (Resilient Distri
 7. `foreach(func)`: This action applies a function 'func' to all elements of the dataset. This is usually done to update an accumulator or interacting with external systems.
 
 Remember, actions in PySpark are the operations that give non-RDD values. They materialize a value in a program. It's the actions that force the evaluation of the transformations (lazy operations) and return values.
+
+### Delta Lake in DataBricks
+
+
+Delta Lake is an open-source storage layer that brings ACID (Atomicity, Consistency, Isolation, Durability) transactions to Apache Spark and big data workloads. It was originally developed by Databricks.
+
+Key Features of Delta Lake include:
+
+1. **ACID Transactions**: Delta Lake provides the ability to enforce single-table transactions, which simplifies the pipeline development significantly.
+
+2. **Scalable Metadata Handling**: In big data, even the metadata itself can be "big data". Delta Lake treats metadata just like data, leveraging Spark's distributed processing power to handle all its metadata.
+
+3. **Time Travel (Data Versioning)**: Delta Lake provides snapshots of data, enabling developers to access and revert to earlier versions of data for audits, rollbacks or to reproduce experiments.
+
+4. **Unified Batch and Streaming Source and Sink**: A table in Delta Lake is both a batch table, as well as a streaming source and sink. Streaming data ingest, batch historic backfill, and interactive queries all just work out of the box.
+
+5. **Schema Enforcement and Evolution**: Delta Lake provides the ability to specify your schema and enforce it. This helps ensure that the data types are correct and required columns are present, preventing bad data from causing data corruption.
+
+6. **Audit History**: Delta Lake transaction log records details about every change made to data providing a full audit trail of the changes.
+
+7. **Updates and Deletes**: Delta Lake supports mutating operations like update and delete which is a key requirement for changing data pipelines.
+
+Delta Lake sits on top of your existing data lake and is fully compatible with Apache Spark APIs, allowing you to build robust data pipelines without having to manage the complexities typically associated with big data processing.
