@@ -194,3 +194,20 @@ Key features of Delta Live Tables include:
 6. **Monitoring**: Delta Live Tables provides built-in monitoring and alerting, so you can understand the health of your data pipelines at a glance.
 
 In summary, Delta Live Tables is a powerful tool for building, managing, and monitoring data pipelines in Databricks.
+
+### Unity Catalog in DataBricks
+
+
+Unity Catalog in Databricks is a unified data catalog that provides a consolidated view of data across an organization. It allows users to discover, understand, and govern data. It's a part of Databricks SQL and it provides a simple way to manage data across multiple databases and tables.
+
+Key features of Unity Catalog include:
+
+1. **Unified View**: It provides a single view of all your data across the organization, regardless of where it is stored.
+
+2. **Data Discovery**: It allows users to easily discover and understand their data. Users can search for tables, view table schemas, and preview data.
+
+3. **Data Governance**: It provides features for data governance, such as managing permissions and tracking data lineage.
+
+4. **Integration**: It integrates with other Databricks features, such as Delta Lake, for a seamless data management experience.
+
+Please note that the availability and features of Unity Catalog may vary based on the Databricks platform version and the specific plan your organization is using.
