@@ -52,3 +52,21 @@ Azure Resource Group is a container that holds related resources for an Azure so
 6. **Avoid Using Reserved Words**: Certain words are reserved in Azure and cannot be used in the name of a resource group. You can find a list of these words in the Azure documentation.
 
 Remember, once a resource group is created, you can't change its name. You would have to delete and recreate it, which would also delete all resources contained in it. So, choose your names carefully.
+
+#### Best Practices for DataBricks workspace name
+
+When naming an Azure Databricks workspace, you should follow these best practices:
+
+1. **Use a Consistent Naming Convention**: It's important to use a consistent naming convention for your Databricks workspaces and other Azure resources. This makes it easier to manage your resources.
+
+2. **Include Relevant Information**: The name should include information about the workspace's purpose, the environment (like prod, dev, test), and the location if applicable. For example, `prod-weu-databricks-ws` could be a workspace for a production environment in West Europe.
+
+3. **Avoid Special Characters**: Only alphanumeric characters, periods, underscores, hyphens, and parenthesis are allowed. Other special characters are not allowed.
+
+4. **Use Lowercase Letters**: Although Azure is not case sensitive, it's a good practice to use lowercase letters to avoid confusion.
+
+5. **Keep it Short but Descriptive**: The name can be up to 90 characters long, but it's a good practice to keep it short while still being descriptive.
+
+6. **Avoid Using Reserved Words**: Certain words are reserved in Azure and cannot be used in the name of a Databricks workspace. You can find a list of these words in the Azure documentation.
+
+Remember, once a Databricks workspace is created, you can't change its name. You would have to delete and recreate it, which would also delete all resources contained in it. So, choose your names carefully.
