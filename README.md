@@ -27,4 +27,10 @@ This should display the version of Azure CLI that you installed.
 
 #### List all the Azure Region locations
 
+You can use the Azure CLI to list all the Azure region locations. Here is the command:
+
+```bash
 az account list-locations --query "[].{Region:name}" --out table
+```
+
+This command will list all the Azure regions in a table format. The `--query "[].{Region:name}"` argument formats the output to only show the region names. The `--out table` argument formats the output as a table. You can replace `table` with `json`, `jsonc`, `yaml`, `tsv` if you prefer a different output format.
