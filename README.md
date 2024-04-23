@@ -24,3 +24,7 @@ az --version
 ```
 
 This should display the version of Azure CLI that you installed.
+
+#### List all the Azure Region locations
+
+az account list-locations --query "[].{Region:name}" --out table
