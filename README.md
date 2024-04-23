@@ -70,3 +70,20 @@ When naming an Azure Databricks workspace, you should follow these best practice
 6. **Avoid Using Reserved Words**: Certain words are reserved in Azure and cannot be used in the name of a Databricks workspace. You can find a list of these words in the Azure documentation.
 
 Remember, once a Databricks workspace is created, you can't change its name. You would have to delete and recreate it, which would also delete all resources contained in it. So, choose your names carefully.
+
+
+#### Best Practices to name a Service Principal
+
+When naming a Service Principal in Azure, it's important to follow some best practices to ensure clarity, organization, and security. Here are some guidelines:
+
+1. **Descriptive**: The name should clearly indicate the purpose of the Service Principal. This makes it easier to manage and identify the Service Principal in the future. For example, if the Service Principal is used for a specific application, you might include the application's name in the Service Principal's name.
+
+2. **Include Environment Information**: If you have multiple environments (like development, testing, staging, production), it can be helpful to include the environment in the Service Principal's name. This can help prevent confusion and mistakes.
+
+3. **Consistent Naming Convention**: Use a consistent naming convention across all your Service Principals. This can make it easier to manage them, especially if you have a large number of Service Principals.
+
+4. **Avoid Sensitive Information**: Do not include sensitive information in the Service Principal's name. The name might appear in logs or other output, so it should not reveal any sensitive information.
+
+5. **Avoid Special Characters**: Some special characters might cause problems with certain operations or scripts. It's generally safest to stick with alphanumeric characters and hyphens.
+
+Here's an example of a Service Principal name following these best practices: `myapp-dev-sp`. This name indicates that the Service Principal is used for an application named "myapp" in the development environment.
