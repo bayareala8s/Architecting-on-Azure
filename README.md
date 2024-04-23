@@ -144,5 +144,156 @@ echo "Tenant: $tenant"
 
 In this script, replace `"your-service-principal-name"` with the name you want to give to your Service Principal. The script logs into Azure, creates a Service Principal, and then prints the Service Principal's `appId`, `password`, and `tenant`. Make sure to save these values, especially the `password`, as you won't be able to retrieve it later.
 
+#### create an Azure Databricks cluster using Azure CLI
+
+To create an Azure Databricks cluster using Azure CLI, you need to use the Databricks CLI or REST API, as the Azure CLI does not directly support Databricks cluster creation. 
+
+Here's a step-by-step guide:
+
+1. Install the Databricks CLI. You can do this using pip:
+
+```bash
+pip install databricks-cli
+```
+
+2. Configure the Databricks CLI with the Databricks host and a personal access token. You can generate a personal access token from the Azure Databricks workspace. Replace `<databricks-instance>` with your Azure Databricks workspace URL (e.g., `https://westus2.azuredatabricks.net`) and `<personal-access-token>` with your generated token:
+
+```bash
+databricks configure --token
+> Databricks Host (should begin with https://): <databricks-instance>
+> Token: <personal-access-token>
+```
+
+3. Now you can create a cluster using the Databricks CLI. You'll need to provide a JSON cluster specification. Here's an example:
+
+```bash
+databricks clusters create --json '{
+  "cluster_name": "my-cluster",
+  "spark_version": "7.3.x-scala2.12",
+  "node_type_id": "Standard_D3_v2",
+  "num_workers": 2
+}'
+```
+
+In this example, replace `"my-cluster"` with your desired cluster name, `"7.3.x-scala2.12"` with your desired Spark version, `"Standard_D3_v2"` with your desired node type, and `2` with your desired number of workers.
+
+Please note that the available Spark versions, node types, and other configuration options may vary depending on your Azure Databricks workspace configuration and region. You can check the available options in your Azure Databricks workspace.
+
+
+#### List all the common commands for databricks-cli
+
+The Databricks Command Line Interface (CLI) is a tool that provides an easy way to interact with the Databricks platform. Here are some of the common commands:
+
+1. **Workspace**
+    - `databricks workspace ls`: Lists all the objects in a workspace.
+    - `databricks workspace rm`: Removes an object in the workspace.
+    - `databricks workspace import`: Imports a file to the workspace.
+    - `databricks workspace export`: Exports a file from the workspace.
+
+2. **DBFS**
+    - `databricks fs ls`: Lists files in DBFS.
+    - `databricks fs rm`: Removes a file from DBFS.
+    - `databricks fs cp`: Copies files to/from DBFS.
+    - `databricks fs mkdirs`: Makes directories in DBFS.
+    - `databricks fs put`: Puts a local file to DBFS.
+
+3. **Clusters**
+    - `databricks clusters list`: Lists all clusters.
+    - `databricks clusters create`: Creates a new cluster.
+    - `databricks clusters edit`: Edits a cluster.
+    - `databricks clusters delete`: Deletes a cluster.
+    - `databricks clusters start`: Starts a cluster.
+    - `databricks clusters restart`: Restarts a cluster.
+    - `databricks clusters get`: Retrieves the information of a cluster.
+
+4. **Jobs**
+    - `databricks jobs list`: Lists all jobs.
+    - `databricks jobs create`: Creates a new job.
+    - `databricks jobs delete`: Deletes a job.
+    - `databricks jobs get`: Retrieves the information of a job.
+    - `databricks jobs run-now`: Runs a job now.
+
+5. **Libraries**
+    - `databricks libraries list`: Lists all libraries for a cluster.
+    - `databricks libraries install`: Installs a library on a cluster.
+    - `databricks libraries uninstall`: Uninstalls a library from a cluster.
+
+6. **Secrets**
+    - `databricks secrets list-scopes`: Lists all secret scopes.
+    - `databricks secrets list`: Lists all secrets in a scope.
+    - `databricks secrets create-scope`: Creates a new secret scope.
+    - `databricks secrets delete-scope`: Deletes a secret scope.
+    - `databricks secrets put`: Puts a secret in a scope.
+
+7. **Groups**
+    - `databricks groups list`: Lists all groups.
+    - `databricks groups create`: Creates a new group.
+    - `databricks groups delete`: Deletes a group.
+    - `databricks groups add-member`: Adds a member to a group.
+    - `databricks groups remove-member`: Removes a member from a group.
+
+8. **Instance Profiles**
+    - `databricks instance-profiles list`: Lists all instance profiles.
+    - `databricks instance-profiles add`: Adds a new instance profile.
+    - `databricks instance-profiles remove`: Removes an instance profile.
+
+Please note that you need to configure the Databricks CLI with the appropriate Databricks host and token before using these commands. You can do this using the `databricks configure --token` command.
+
+
+#### available authentication methods for Azure Databricks
+
+Azure Databricks supports several methods for authentication:
+
+1. **Azure Active Directory (AAD) Token Authentication**: Azure Databricks integrates with Azure Active Directory (AAD), which allows users to authenticate using their AAD credentials. This is the most common method of authentication.
+
+2. **Personal Access Tokens**: Personal Access Tokens (PATs) are used to authenticate with the Databricks REST API, the Databricks CLI, and Databricks workspaces. A PAT can be generated from the Azure Databricks workspace.
+
+3. **Service Principal**: A Service Principal is an identity created for use with applications, hosted services, and automated tools to access Azure resources. This can be used to authenticate a Databricks workspace.
+
+4. **Shared Key**: For some Azure Databricks REST API endpoints, you can authenticate by providing a shared key as a query parameter in the API request.
+
+5. **Azure AD Application**: An Azure AD application is a standalone authentication resource that can be used to authenticate a Databricks workspace.
+
+Remember to choose the authentication method that best suits your use case and security requirements.
+
+#### available configuration options for an Azure Databricks cluster
+
+
+Azure Databricks clusters have several configuration options that you can set when you create a cluster. Here are some of the key configuration options:
+
+1. **Cluster Mode**: You can choose between Standard and High Concurrency modes. High Concurrency mode is optimized for concurrent execution of many user queries, while Standard mode is for single-user workloads.
+
+2. **Databricks Runtime Version**: You can choose the Databricks runtime version for your cluster. This includes runtime versions with support for Machine Learning, Genomics, and GPU.
+
+3. **Python Version**: You can choose the Python version for your cluster.
+
+4. **Enable Autoscaling**: You can enable autoscaling, which automatically adjusts the number of workers in your cluster based on the workload.
+
+5. **Min/Max Workers**: If you enable autoscaling, you can set the minimum and maximum number of workers.
+
+6. **Custom Libraries**: You can install custom libraries on your cluster.
+
+7. **Node Type**: You can choose the node type for the driver and the workers. The node type determines the resources available for each node, such as CPU, memory, and storage.
+
+8. **Driver and Worker Logs**: You can enable driver and worker logs, which are useful for debugging.
+
+9. **Init Scripts**: You can run initialization scripts when your cluster starts. These scripts can be used to install system packages, mount file systems, and other setup tasks.
+
+10. **Environment Variables**: You can set environment variables for your cluster.
+
+11. **Cluster Log Delivery**: You can configure the delivery of cluster logs to a cloud storage location.
+
+12. **Termination/Idle Timeouts**: You can set a time limit for idle clusters before they are terminated.
+
+13. **Spot/On-demand Instances**: You can choose to use spot instances for your workers to save costs.
+
+14. **Zones**: You can specify the availability zones in which to launch the cluster nodes.
+
+Please note that the available configuration options may vary depending on your Azure Databricks workspace configuration and region. You can check the available options in your Azure Databricks workspace or refer to the Azure Databricks documentation for more details.
+
+
+
+
+
 
 
