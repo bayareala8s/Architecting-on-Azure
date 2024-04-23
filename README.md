@@ -87,3 +87,62 @@ When naming a Service Principal in Azure, it's important to follow some best pra
 5. **Avoid Special Characters**: Some special characters might cause problems with certain operations or scripts. It's generally safest to stick with alphanumeric characters and hyphens.
 
 Here's an example of a Service Principal name following these best practices: `myapp-dev-sp`. This name indicates that the Service Principal is used for an application named "myapp" in the development environment.
+
+#### Bash Script to login to Azure without Browse
+
+
+Yes, you can use a Service Principal to authenticate to Azure from a bash script without needing a browser. A Service Principal is an identity created for use with applications, hosted services, and automated tools to access Azure resources.
+
+Here's an example of how you can do it:
+
+```bash
+#!/bin/bash
+
+# Variables
+subscriptionId="your-subscription-id"
+tenantId="your-tenant-id"
+appId="your-app-id"
+password="your-password"
+
+# Login to Azure
+az login --service-principal --username $appId --password $password --tenant $tenantId
+
+# Set the subscription
+az account set --subscription $subscriptionId
+```
+
+In this script, replace `"your-subscription-id"`, `"your-tenant-id"`, `"your-app-id"`, and `"your-password"` with your actual Azure subscription ID, tenant ID, app ID, and password respectively.
+
+Please note that this method requires you to store your credentials in the script, which can be a security risk. Make sure to secure your script appropriately, and consider using Azure Key Vault or another secure method to store your credentials.
+
+#### Bash Script to create an Azure Service Principal
+
+Sure, you can create an Azure Service Principal using a bash script. Here's an example:
+
+```bash
+#!/bin/bash
+
+# Variables
+name="your-service-principal-name"
+
+# Login to Azure
+az login
+
+# Create a Service Principal
+sp=$(az ad sp create-for-rbac --name $name --query "{appId: appId, password: password, tenant: tenant}" --output tsv)
+
+# Parse the output
+appId=$(echo $sp | cut -f1)
+password=$(echo $sp | cut -f2)
+tenant=$(echo $sp | cut -f3)
+
+# Print the Service Principal's details
+echo "App ID: $appId"
+echo "Password: $password"
+echo "Tenant: $tenant"
+```
+
+In this script, replace `"your-service-principal-name"` with the name you want to give to your Service Principal. The script logs into Azure, creates a Service Principal, and then prints the Service Principal's `appId`, `password`, and `tenant`. Make sure to save these values, especially the `password`, as you won't be able to retrieve it later.
+
+
+
