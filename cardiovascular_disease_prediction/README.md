@@ -102,6 +102,78 @@ train_data, test_data = df.randomSplit([0.7, 0.3])
 
 Remember to replace `"old_name"`, `"new_name"`, and `"unnecessary_column"` with the actual column names in your DataFrame.
 
+
+## Common data exploration techniques in PySpark
+
+Data exploration is a crucial step in data analysis and machine learning. It helps to understand the data, its characteristics, and the underlying structure. Here are some common data exploration techniques in PySpark:
+
+1. **Loading Data**: The first step in data exploration is loading the data. PySpark can read data from various formats like CSV, JSON, Parquet, etc.
+
+2. **Viewing Data**: You can use the `show()` function to view the data. It displays the top 20 rows of DataFrame in a tabular form.
+
+3. **Schema Inspection**: The `printSchema()` function is used to print the schema of the DataFrame. It displays the data types of each column.
+
+4. **Summary Statistics**: The `describe()` function provides summary statistics of numerical columns which include count, mean, stddev, min, and max.
+
+5. **Counting Rows**: The `count()` function returns the number of rows in the DataFrame.
+
+6. **Selecting and Accessing Data**: You can select and access data in PySpark DataFrame using column names.
+
+7. **Handling Missing Values**: PySpark provides `drop()`, `fill()`, and `replace()` functions to handle missing values.
+
+8. **Filtering Data**: The `filter()` function is used to filter rows in the DataFrame based on given condition.
+
+9. **Aggregation**: PySpark DataFrame provides several functions like `groupby()`, `agg()`, `pivot()`, etc., for aggregation.
+
+10. **Sorting Data**: The `sort()` and `orderBy()` functions are used to sort the DataFrame based on one or more columns.
+
+11. **Running SQL Queries**: PySpark SQL module provides a programming interface to run SQL queries on DataFrame.
+
+Here's an example of how you might use some of these techniques:
+
+```python
+from pyspark.sql import SparkSession
+
+# Create a SparkSession
+spark = SparkSession.builder.appName("DataExploration").getOrCreate()
+
+# Load the data
+df = spark.read.format("csv").option("header", "true").option("inferSchema", "true").load("data/cardio_train.csv")
+
+# Print the schema
+df.printSchema()
+
+# Show the first few rows
+df.show()
+
+# Summary statistics
+df.describe().show()
+
+# Count the number of rows
+print("Number of rows: ", df.count())
+
+# Select specific columns
+df.select("age", "gender").show()
+
+# Handle missing values
+df = df.na.drop()
+
+# Filter data
+df.filter(df.age > 50).show()
+
+# Group by and aggregate
+df.groupBy("gender").count().show()
+
+# Sort data
+df.sort("age").show()
+
+# Run SQL queries
+df.createOrReplaceTempView("table")
+spark.sql("SELECT * FROM table WHERE age > 50").show()
+```
+
+Remember to replace `"data/cardio_train.csv"` with the actual path to your CSV file.
+
 ### Steps to install Spark on Mac
 
 To install Apache Spark on macOS, you can follow these steps:
