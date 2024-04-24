@@ -1,3 +1,16 @@
+"Architecting-on-Azure" is a Git repository that typically contains resources, scripts, and code related to designing and building applications on Microsoft Azure. 
+
+The repository might include:
+
+- Infrastructure as Code (IaC) scripts, possibly written in Azure Resource Manager (ARM) templates or Terraform, to provision and manage Azure resources.
+- Architectural diagrams and design documents outlining the structure and behavior of the application.
+- Sample code snippets or applications demonstrating the use of various Azure services.
+- Scripts for automating deployment, scaling, and management of applications on Azure.
+- Documentation providing guidance on best practices for architecting on Azure, such as how to design for scalability, reliability, and security.
+
+Please note that the actual contents can vary based on the specific goals and requirements of the project.
+
+
 # Architecting-on-Azure
 
 ### Install Azure CLI on macOS
