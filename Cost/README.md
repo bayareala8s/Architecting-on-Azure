@@ -81,3 +81,43 @@ Implementing cost monitoring tools in Azure Cloud Services involves several best
 10. **Implement Governance Policies**: Use Azure Policy to implement governance policies that can help control your costs. For example, you can create policies to restrict the creation of high-cost resources or to require tags on all resources.
 
 Remember, the specific practices you choose will depend on your specific use cases and requirements.
+
+
+### Monitor Unused Resources in Azure
+
+Monitoring unused resources in Azure can be achieved by using Azure Advisor, a personalized cloud consultant that helps you follow best practices to optimize your Azure deployments. It analyzes your resource configuration and usage telemetry and then recommends solutions that can help you improve the cost effectiveness, performance, high availability, and security of your Azure resources.
+
+Here's a step-by-step guide on how to use Azure Advisor to monitor unused resources:
+
+1. Sign in to the Azure portal.
+
+2. In the left-hand menu, click on "Advisor".
+
+3. In the Advisor dashboard, you'll see several tabs for different types of recommendations: High Availability, Security, Performance, and Cost.
+
+4. Click on the "Cost" tab. This tab shows cost recommendations that can help you optimize and save on your Azure resources.
+
+5. Look for recommendations titled "Delete or reconfigure idle virtual machines" or "Delete unused disk volumes". These recommendations identify unused resources that you might want to delete to save costs.
+
+6. Click on a recommendation to see more details about the unused resources and to take action.
+
+Please note that Azure Advisor's recommendations are based on analyzing your usage patterns over a period of time, so it might not immediately identify newly created resources as unused.
+
+Also, before deleting any resources, make sure to verify that they are indeed unused and not needed for any future tasks.
+
+
+### Azure Advisor
+
+Azure Advisor is a personalized cloud consultant that helps you optimize your Azure deployments. It analyzes your resource configuration and usage telemetry and then recommends solutions that can help you improve the cost effectiveness, performance, high availability, and security of your Azure resources.
+
+Azure Advisor provides recommendations in four categories:
+
+1. **Cost**: These recommendations can help you eliminate unprovisioned Azure resources and optimize your Azure resource usage to save money.
+
+2. **Performance**: These recommendations can help you improve the speed and responsiveness of your applications running on Azure.
+
+3. **High Availability**: These recommendations can help you improve the continuity of your applications by ensuring that they are highly available.
+
+4. **Security**: These recommendations can help you discover and fix potential security vulnerabilities.
+
+You can access Azure Advisor through the Azure portal. Once you're in the portal, you can see the Advisor dashboard by searching for 'Advisor' in the search bar. The dashboard will show you all the recommendations for your resources. You can choose to implement the recommendations, postpone them for a certain period, or dismiss them if they're not relevant to you.
