@@ -129,3 +129,20 @@ When implementing VNET injection with Azure Databricks, there are several consid
 6. **Integration with Other Azure Services**: If you want to use your Databricks workspace with other Azure services that use VNets, such as Azure Synapse Analytics or Azure Machine Learning, you need to ensure that these services can communicate with your workspace.
 
 7. **Maintenance and Monitoring**: Once you have set up VNet injection, you need to monitor your network to ensure that it is functioning correctly and to detect any potential security issues. You also need to maintain your network, for example by updating your security rules as your requirements change.
+
+
+### VNET injection with Azure Databricks provides several benefits:
+
+Using VNET injection with Azure Databricks provides several benefits:
+
+1. **Network Isolation**: By injecting your Databricks workspace into your own Azure Virtual Network (VNet), you can isolate your Databricks workspace from other workspaces and resources. This can help to improve the security of your workspace.
+
+2. **Control Over Network Settings**: VNet injection allows you to have more control over the network settings of your Databricks workspace. You can define your own IP address ranges, subnets, routing tables, network gateways, and more.
+
+3. **Secure Connectivity**: With VNet injection, you can establish secure connections between your Databricks workspace and other resources in your VNet. For example, you can securely connect your Databricks workspace to an Azure SQL Database or Azure Synapse Analytics workspace in the same VNet.
+
+4. **Compliance and Regulatory Requirements**: If your organization has specific compliance or regulatory requirements related to network security, VNet injection can help you to meet these requirements. For example, you can use Network Security Groups (NSGs) and Azure Firewall to control and log all network traffic to and from your Databricks workspace.
+
+5. **Cost Savings**: By using VNet peering, you can connect your Databricks workspace to other VNets in the same Azure region without any additional data transfer costs. This can result in significant cost savings if you have large amounts of data to transfer between your Databricks workspace and other resources.
+
+6. **Integration with Azure Services**: VNet injection allows you to integrate your Databricks workspace with other Azure services that use VNets, such as Azure Private Link. This can help to improve the security and performance of your data pipelines.
