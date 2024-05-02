@@ -146,3 +146,40 @@ Using VNET injection with Azure Databricks provides several benefits:
 5. **Cost Savings**: By using VNet peering, you can connect your Databricks workspace to other VNets in the same Azure region without any additional data transfer costs. This can result in significant cost savings if you have large amounts of data to transfer between your Databricks workspace and other resources.
 
 6. **Integration with Azure Services**: VNet injection allows you to integrate your Databricks workspace with other Azure services that use VNets, such as Azure Private Link. This can help to improve the security and performance of your data pipelines.
+
+### Configure network security for Azure Databricks VNET injection
+
+To configure network security for Azure Databricks VNET injection, you can use Azure Network Security Groups (NSGs). NSGs allow you to filter network traffic to and from Azure resources in an Azure virtual network. An NSG can contain multiple inbound and outbound security rules that enable you to filter traffic to and from resources by source and destination IP address, port, and protocol.
+
+Here's an example of how you can create an NSG and associate it with your subnet using Terraform:
+
+```hcl-terraform
+resource "azurerm_network_security_group" "main" {
+  name                = "myNSG"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+}
+
+resource "azurerm_network_security_rule" "allow_databricks" {
+  name                        = "AllowDatabricks"
+  priority                    = 1001
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "443"
+  source_address_prefix       = "VirtualNetwork"
+  destination_address_prefix  = "VirtualNetwork"
+  network_security_group_name = azurerm_network_security_group.main.name
+  resource_group_name         = azurerm_resource_group.main.name
+}
+
+resource "azurerm_subnet_network_security_group_association" "main" {
+  subnet_id                 = azurerm_subnet.private.id
+  network_security_group_id = azurerm_network_security_group.main.id
+}
+```
+
+In this example, a new NSG named `myNSG` is created. A security rule named `AllowDatabricks` is then added to this NSG. This rule allows inbound traffic on TCP port 443 from within the virtual network. The NSG is then associated with the `private` subnet.
+
+Please replace the placeholders with your actual values and make sure that the network configurations meet your requirements.
