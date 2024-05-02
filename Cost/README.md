@@ -121,3 +121,7 @@ Azure Advisor provides recommendations in four categories:
 4. **Security**: These recommendations can help you discover and fix potential security vulnerabilities.
 
 You can access Azure Advisor through the Azure portal. Once you're in the portal, you can see the Advisor dashboard by searching for 'Advisor' in the search bar. The dashboard will show you all the recommendations for your resources. You can choose to implement the recommendations, postpone them for a certain period, or dismiss them if they're not relevant to you.
+
+https://learn.microsoft.com/en-us/azure/advisor/advisor-reference-operational-excellence-recommendations
+
+
