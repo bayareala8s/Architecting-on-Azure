@@ -83,3 +83,30 @@ Using VNET injection with Azure Databricks provides several benefits, but it als
 7. **Limited to Azure**: VNET injection is specific to Azure. If you want to use a similar feature in a different cloud provider, you may need to find a different solution.
 
 Remember, it's important to carefully consider these limitations when deciding whether to use VNET injection with Azure Databricks.
+
+
+### Best practices for securing Azure Databricks VNET injection
+
+Securing Azure Databricks VNET injection involves several best practices:
+
+1. **Least Privilege Access**: Only allow necessary communication between resources. Use Network Security Groups (NSGs) and Azure Firewall to restrict traffic to the minimum required for your workloads to function correctly.
+
+2. **Use Private Endpoints**: Azure Private Link provides private connectivity from a virtual network to Azure Databricks, isolating your traffic from the public internet.
+
+3. **Secure Databricks Public Endpoints**: If you need to use public endpoints, secure them using IP Access Lists to allow only necessary IP addresses.
+
+4. **Monitor Network Traffic**: Use Azure Monitor and Azure Security Center to monitor network traffic and detect any unusual activity.
+
+5. **Encrypt Data**: Use Azure's encryption capabilities to encrypt data at rest and in transit.
+
+6. **Regular Audits**: Regularly review and audit your network security settings to ensure they are still appropriate for your workloads.
+
+7. **Use Azure Policy**: Use Azure Policy to enforce specific network configurations and settings.
+
+8. **Secure Access to Databricks Workspace**: Use Azure Active Directory for authentication and enable Multi-Factor Authentication (MFA) for an additional layer of security.
+
+9. **Secure Data Processing**: Use Databricks runtime for sensitive data, which includes additional security features for processing sensitive data.
+
+10. **Incident Response Plan**: Have a plan in place for responding to security incidents. This includes knowing how to use Azure's tools to investigate an incident and having a communication plan to inform stakeholders.
+
+Remember, security is a continuous process and requires regular review and updates as your workloads and the threat landscape change.
