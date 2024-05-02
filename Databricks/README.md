@@ -33,3 +33,16 @@ Azure Virtual Network
 In this setup, the Azure Databricks workspace is deployed in the public subnet, while the Databricks clusters (driver and worker nodes) are deployed in the private subnet. This setup allows the clusters to access other resources in the private subnet securely, while the workspace can be accessed over the internet.
 
 Remember, the specific architecture and network topology will depend on your specific use cases and requirements.
+
+
+### Network Topology Comparision (Private Endpoints / Service Endpoints / UDR)
+
+Azure Databricks can be integrated with Azure Virtual Network (VNet) using three different methods: Private Endpoints, Service Endpoints, and User-Defined Routes (UDR). Here's a comparison of these methods:
+
+1. **Private Endpoints**: Private Endpoints provide secure connectivity between clients on your VNet and your Azure Databricks workspace. The traffic between your VNet and Azure Databricks traverses over the Microsoft backbone network, eliminating exposure to the public internet. This is the most secure method and is recommended for most workloads.
+
+2. **Service Endpoints**: Service Endpoints provide secure connectivity between your VNet and Azure Databricks, but unlike Private Endpoints, the traffic does not traverse the Microsoft backbone network. Instead, the traffic is routed to Azure Databricks over the Microsoft backbone network from the point of the Service Endpoint. This method is less secure than Private Endpoints because the traffic is not completely isolated from the public internet.
+
+3. **User-Defined Routes (UDR)**: UDRs allow you to override Azure's default system routes or to add additional routes to a subnet's route table. You can use UDRs to force traffic from your VNet to Azure Databricks to go through a Network Virtual Appliance (NVA) for inspection or additional routing logic. This method provides the most control over your network traffic, but it also requires the most configuration and management.
+
+In summary, Private Endpoints provide the highest level of security and are recommended for most workloads. Service Endpoints are less secure but may be easier to set up. UDRs provide the most control over your network traffic but require the most configuration and management. The best method for your workload will depend on your specific security requirements and network architecture.
