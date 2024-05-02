@@ -183,3 +183,23 @@ resource "azurerm_subnet_network_security_group_association" "main" {
 In this example, a new NSG named `myNSG` is created. A security rule named `AllowDatabricks` is then added to this NSG. This rule allows inbound traffic on TCP port 443 from within the virtual network. The NSG is then associated with the `private` subnet.
 
 Please replace the placeholders with your actual values and make sure that the network configurations meet your requirements.
+
+### Common security risks when using VNET injection with Azure Databricks
+
+When using VNET injection with Azure Databricks, there are several common security risks to be aware of:
+
+1. **Misconfigured Network Security Groups (NSGs)**: NSGs control inbound and outbound traffic to your Databricks workspace. If these are misconfigured, it could allow unauthorized access to your resources.
+
+2. **Insecure Public Endpoints**: If public endpoints are used and not properly secured, they could be exposed to the public internet, leading to potential unauthorized access.
+
+3. **Insufficient Monitoring and Auditing**: Without proper monitoring and auditing, you might miss suspicious activities or breaches, which could lead to data loss or compromise.
+
+4. **Lack of Encryption**: If data at rest and in transit is not encrypted, it could be intercepted and read by unauthorized individuals.
+
+5. **Weak Access Control**: If Azure Active Directory and Multi-Factor Authentication (MFA) are not properly used, unauthorized users could gain access to your Databricks workspace.
+
+6. **Lack of Incident Response Plan**: Without a proper incident response plan, your organization might not be prepared to effectively respond to security incidents, leading to increased damage.
+
+7. **Non-compliance with Regulatory Requirements**: If your organization has specific compliance or regulatory requirements related to network security, failure to meet these requirements when using VNet injection could lead to legal and financial penalties.
+
+Remember, these risks can be mitigated by following best practices for securing Azure Databricks VNET injection, such as those mentioned in the previous conversation.
