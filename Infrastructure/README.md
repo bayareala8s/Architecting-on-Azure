@@ -41,3 +41,44 @@ In this diagram:
 - The "Hub VNet" contains shared services, firewall/NVA, DNS, AD DS, etc.
 - The "Spoke VNets" represent isolated workloads, each potentially representing a different application.
 - The "Hub VNet" and "Spoke VNets" are connected through VNet Peering, allowing them to communicate with each other.
+
+
+The Azure Hub and Spoke architecture is a common network topology used in Azure deployments. Here's a simplified text diagram of the architecture:
+
+```
++-------------------+     +-------------------+
+|                   |     |                   |
+|    Shared         |     |    Production     |
+|    Services       |     |    Workloads      |
+|    (Hub)          |     |    (Spoke)        |
+|                   |     |                   |
+|    +-----------+  |     |    +-----------+  |
+|    |  Firewall |  |     |    |  App 1    |  |
+|    +-----------+  |     |    +-----------+  |
+|                   |     |                   |
+|    +-----------+  |     |    +-----------+  |
+|    |  VPN      |  |     |    |  App 2    |  |
+|    +-----------+  |     |    +-----------+  |
+|                   |     |                   |
++-------------------+     +-------------------+
+         |                       |
+         |                       |
+         +-----------------------+
+         |
++-------------------+
+|                   |
+|    On-Premises    |
+|    Network        |
+|                   |
++-------------------+
+```
+
+In this diagram:
+
+- The "Shared Services (Hub)" represents the central network hub, which contains shared services like network security and connectivity (represented by the Firewall and VPN in the diagram).
+- The "Production Workloads (Spoke)" represents a spoke network, which contains the actual application workloads (represented by App 1 and App 2 in the diagram).
+- The lines connecting the hub and spoke represent peering connections, which allow network traffic to flow between the hub and spoke.
+- The "On-Premises Network" represents an on-premises network that is connected to the hub via a VPN or ExpressRoute connection.
+
+This is a simplified diagram and a real-world deployment may contain multiple spokes, additional shared services in the hub, and more complex network configurations.
+
