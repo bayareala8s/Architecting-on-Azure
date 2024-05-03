@@ -13,3 +13,31 @@ Azure Hub and Spoke architecture is commonly used in various scenarios, includin
 5. **Security and Compliance**: For organizations with strict security and compliance requirements, the hub can host security appliances and services (like Azure Firewall or third-party NVAs) to control and log traffic flow between the on-premises network, the hub, and the spokes.
 
 6. **Cost Management**: By segregating resources into different spokes, organizations can more easily track costs and usage for different projects, departments, or applications.
+
+
+### Here's a simple text diagram for Azure Hub and Spoke architecture:
+
+```
+On-Premises Network
+        |
+        |
+  VPN/ExpressRoute Gateway
+        |
+        |
+  ---------------------    Peering    ---------------------
+  |     Hub VNet     | <-----------> |    Spoke VNet 1    |
+  |                   |               | (Application 1)   |
+  | - Shared Services |               ---------------------
+  | - Firewall/NVA   |
+  | - DNS, AD DS     |    Peering    ---------------------
+  --------------------- <-----------> |    Spoke VNet 2    |
+                                      | (Application 2)   |
+                                      ---------------------
+```
+
+In this diagram:
+
+- The "On-Premises Network" is connected to the "Hub VNet" through a VPN or ExpressRoute Gateway.
+- The "Hub VNet" contains shared services, firewall/NVA, DNS, AD DS, etc.
+- The "Spoke VNets" represent isolated workloads, each potentially representing a different application.
+- The "Hub VNet" and "Spoke VNets" are connected through VNet Peering, allowing them to communicate with each other.
