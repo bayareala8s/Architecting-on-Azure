@@ -44,3 +44,87 @@ Building an enterprise data platform on Azure involves several patterns and prac
 10. **Cost Management**: Use Azure Cost Management to monitor and control your Azure spending.
 
 Remember, these are general patterns and practices. The specific architecture and services you choose will depend on your specific use cases and requirements.
+
+### Terraform script to create HDInsight kafka cluster with 3 brokers:
+
+Here is a Terraform script that includes the Azure provider, creates a resource group, and then creates an HDInsight Kafka cluster with 3 brokers in the "West US 2" region:
+
+```hcl
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "example-resources"
+  location = "West US 2"
+}
+
+resource "azurerm_storage_account" "example" {
+  name                     = "examplestoracc"
+  resource_group_name      = azurerm_resource_group.example.name
+  location                 = azurerm_resource_group.example.location
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+}
+
+resource "azurerm_storage_container" "example" {
+  name                  = "example-container"
+  storage_account_name  = azurerm_storage_account.example.name
+  container_access_type = "private"
+}
+
+resource "azurerm_hdinsight_kafka_cluster" "example" {
+  name                = "example-hdicluster"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+  cluster_version     = "3.6"
+  tier                = "Standard"
+
+  component_version {
+    kafka = "2.1"
+  }
+
+  gateway {
+    enabled  = true
+    username = "acctestusrgw"
+    password = "Terraf0rm123!"
+  }
+
+  storage_account {
+    storage_container_id = azurerm_storage_container.example.id
+    storage_account_key  = azurerm_storage_account.example.primary_access_key
+    is_default           = true
+  }
+
+  roles {
+    head_node {
+      vm_size  = "A6"
+      username = "acctestusrhn"
+      password = "Terraf0rm123!"
+    }
+
+    worker_node {
+      vm_size               = "A6"
+      username              = "acctestusrwn"
+      password              = "Terraf0rm123!"
+      target_instance_count = 3
+    }
+
+    zookeeper_node {
+      vm_size  = "A6"
+      username = "acctest
+
+usr
+
+zn"
+      password = "Terraf0rm123!"
+    }
+  }
+}
+```
+
+Please replace the placeholders with your actual values. For example, replace `"example-resources"` with your desired resource group name, `"example-hdicluster"` with your desired cluster name, `"acctestusrgw"` with your desired gateway username, and `"Terraf0rm123!"` with your desired password. The same goes for the storage account and container names.
+
+This script creates a resource group, a storage account, a storage container, and an HDInsight Kafka cluster with 3 worker nodes (which are the Kafka brokers in this case) in the "West US 2" region.
+
+Please note that you need to have the Azure provider configured and the necessary permissions to create resources in Azure. Also, make sure to install the Terraform AzureRM Provider before running this script.
