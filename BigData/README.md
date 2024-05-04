@@ -112,11 +112,7 @@ resource "azurerm_hdinsight_kafka_cluster" "example" {
 
     zookeeper_node {
       vm_size  = "A6"
-      username = "acctest
-
-usr
-
-zn"
+      username = "acctestusrzn"
       password = "Terraf0rm123!"
     }
   }
