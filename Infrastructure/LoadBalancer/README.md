@@ -19,8 +19,6 @@ In this diagram:
 Keep in mind that Azure Load Balancer can also be configured for inbound NAT rules, outbound connections, and can be used for both public and private IP addresses.
 
 
-Here's a simple text diagram of an Azure Load Balancer:
-
 ```
 [Internet]
     |
