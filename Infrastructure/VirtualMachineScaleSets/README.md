@@ -469,3 +469,163 @@ Optimizing the performance of a NestJS Docker application in an Azure VM Scale S
 10. **Optimize Database Performance**: If you're using a database, ensure it's properly indexed and consider using read replicas to distribute read traffic.
 
 Remember, performance optimization is a continuous process and requires regular monitoring and adjustments based on your application's performance metrics.
+
+
+### Terraform script that deploys a NestJS Docker application hosted on Azure Container Registry onto a Virtual Machine Scale Set with 3 nodes and an Azure Load Balancer (ALB)
+
+Here's a Terraform script that deploys a NestJS Docker application hosted on Azure Container Registry onto a Virtual Machine Scale Set with 3 nodes and an Azure Load Balancer (ALB). 
+
+Please replace the placeholders (`<...>`) with your actual values.
+
+```hcl
+provider "azurerm" {
+  features {}
+}
+
+data "azurerm_resource_group" "existing" {
+  name     = "<resource-group-name>"
+}
+
+resource "azurerm_container_registry" "acr" {
+  name                     = "<acr-name>"
+  resource_group_name      = data.azurerm_resource_group.existing.name
+  location                 = data.azurerm_resource_group.existing.location
+  sku                      = "Basic"
+  admin_enabled            = true
+}
+
+data "azurerm_subnet" "existing" {
+  name                 = "<subnet-name>"
+  virtual_network_name = "<vnet-name>"
+  resource_group_name  = data.azurerm_resource_group.existing.name
+}
+
+resource "azurerm_virtual_machine_scale_set" "vmss" {
+  name                = "<vmss-name>"
+  location            = data.azurerm_resource_group.existing.location
+  resource_group_name = data.azurerm_resource_group.existing.name
+  upgrade_policy_mode = "Manual"
+  overprovision       = true
+  sku {
+    name     = "Standard_F2"
+    tier     = "Standard"
+    capacity = 3
+  }
+
+  os_profile {
+    computer_name_prefix = "vmss"
+    admin_username       = "adminuser"
+    admin_password       = "P@ssw0rd1234!"
+  }
+
+  os_profile_linux_config {
+    disable_password_authentication = false
+  }
+
+  network_profile {
+    name    = "networkprofile"
+    primary = true
+    ip_configuration {
+      name      = "ipconfig"
+      primary   = true
+      subnet_id = data.azurerm_subnet.existing.id
+    }
+  }
+
+  extension {
+    name                 = "DockerExtension"
+    publisher            = "Microsoft.Azure.Extensions"
+    type                 = "DockerExtension"
+    type_handler_version = "1.1"
+
+    settings = <<SETTINGS
+    {
+      "docker": {
+        "registry": "${azurerm_container_registry.acr.login_server}",
+        "email": "<docker-email>",
+        "username": "${azurerm_container_registry.acr.admin_username}",
+        "password": "${azurerm_container_registry.acr.admin_password}"
+      },
+      "compose": {
+        "nestjs": {
+          "image": "${azurerm_container_registry.acr.login_server}/nestjs:latest",
+          "ports": ["3000:3000"]
+        }
+      }
+    }
+    SETTINGS
+  }
+}
+
+resource "azurerm_lb" "example" {
+  name                = "<lb-name>"
+  location            = data.azurerm_resource_group.existing.location
+  resource_group_name = data.azurerm_resource_group.existing.name
+
+  frontend_ip_configuration {
+    name                 = "PublicIPAddress"
+    public_ip_address_id = azurerm_public_ip.example.id
+  }
+}
+
+resource "azurerm_lb_backend_address_pool" "bap" {
+  loadbalancer_id = azurerm_lb.example.id
+  name            = "BackEndAddressPool"
+}
+
+resource "azurerm_lb_probe" "probe" {
+  resource_group_name = data.azurerm_resource_group.existing.name
+  loadbalancer_id     = azurerm_lb.example.id
+  name                = "myProbe"
+  port                = 3000
+}
+
+resource "azurerm_lb_rule" "rule" {
+  resource_group_name            = data.azurerm_resource_group.existing.name
+  loadbalancer_id                = azurerm_lb.example.id
+  name                           = "LBRule"
+  protocol                       = "Tcp"
+  frontend_port                  = 80
+  backend_port                   = 3000
+  frontend_ip_configuration_name = "PublicIPAddress"
+  backend_address_pool_id        = azurerm_lb_backend_address_pool.bap.id
+  probe_id                       = azurerm_lb_probe.probe.id
+}
+
+resource "azurerm_virtual_machine_scale_set_extension" "vmss" {
+  name                         = "vmssDockerLogin"
+  virtual_machine_scale_set_id = azurerm_virtual_machine_scale_set.vmss.id
+  publisher                    = "Microsoft.Azure.Extensions"
+  type                         = "DockerExtension"
+  type_handler_version         = "1.1"
+
+  settings = <<SETTINGS
+  {
+    "docker": {
+      "registry": "${azurerm_container_registry.acr.login_server}",
+      "email": "<docker-email>",
+      "username": "${azurerm_container_registry.acr.admin_username}",
+      "password": "${azurerm_container_registry.acr.admin_password}"
+    },
+    "compose": {
+      "nestjs": {
+        "image": "${azurerm_container_registry.acr.login_server}/nestjs:latest",
+        "ports": ["3000:3000"]
+      }
+    }
+  }
+  SETTINGS
+}
+```
+
+This script does the following:
+
+1. Sets up the Azure provider.
+2. Retrieves the existing resource group and subnet.
+3. Creates an Azure Container Registry (ACR).
+4. Creates a Virtual Machine Scale Set (VMSS) with 3 nodes.
+5. Configures the VMSS to pull the NestJS Docker image from the ACR.
+6. Creates an Azure Load Balancer (ALB) and configures it to distribute traffic to the VMSS nodes.
+
+Please note that the Docker extension is deprecated and it's recommended to use the Azure Container Instances or Kubernetes services for running Docker containers in Azure.
+
