@@ -87,3 +87,36 @@ Securing Azure Sentinel involves several best practices:
 9. Continuous Improvement: Continuously improve your security posture by learning from past incidents and adjusting your detection and response processes accordingly.
 
 10. Training and Awareness: Ensure that your security team is adequately trained on Azure Sentinel and is aware of the latest threats and mitigation techniques.
+
+
+### Best practices for securing a NestJS Docker application in Azure VM Scale Set
+
+Securing a NestJS Docker application in an Azure VM Scale Set involves several best practices:
+
+1. **Use the latest stable Docker image**: Always use the latest stable Docker image for your NestJS application. This ensures that you have the latest security patches.
+
+2. **Non-root user**: Run your Docker containers as a non-root user. If an attacker gains access to your container, they won't have root access to the host machine.
+
+3. **Secure Dockerfile**: Follow best practices when writing your Dockerfile. Avoid including any sensitive data in the Dockerfile or the image itself.
+
+4. **Use HTTPS**: Use HTTPS for all communications. This ensures that all data transmitted between the client and your application is encrypted.
+
+5. **Limit CPU/Memory**: Limit the CPU and memory usage of your Docker containers to prevent DoS attacks.
+
+6. **Network Policies**: Use network policies to restrict which services can communicate with your NestJS application.
+
+7. **Regularly update and patch**: Regularly update and patch your application and all of its dependencies.
+
+8. **Use Azure Security Center**: Azure Security Center provides unified security management and advanced threat protection. It can help you detect and respond to potential security threats.
+
+9. **VM Scale Set Configuration**: Configure your VM Scale Set for automatic updates to ensure that the VMs are always up-to-date with the latest security patches.
+
+10. **Use Managed Identities**: Use Azure Managed Identities to manage the credentials that your application needs to connect to other Azure services. This way, you don't need to store any credentials in your code or configuration files.
+
+11. **Encrypt data at rest and in transit**: Use Azure's built-in capabilities for encrypting data at rest and in transit.
+
+12. **Enable Azure Defender**: Azure Defender provides additional security capabilities such as Just-In-Time access, adaptive application controls, and network hardening recommendations.
+
+Remember, security is a continuous process and requires regular review and updates to your security policies and configurations.
+
+### 
