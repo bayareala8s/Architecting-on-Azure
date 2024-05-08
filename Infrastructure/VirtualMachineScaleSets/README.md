@@ -444,3 +444,28 @@ In this example, replace `"your-ssl-cert-password"` with the password for the SS
 Please note that this is a basic example and you might need to adjust it to fit your needs. For example, you might want to configure the Application Gateway to use HTTPS for the backend protocol, or you might want to add a health probe to the Application Gateway to check the health of your application.
 
 
+### Best practices for optimizing the performance of a NestJS Docker application in Azure VM Scale Set
+
+Optimizing the performance of a NestJS Docker application in an Azure VM Scale Set involves several best practices:
+
+1. **Use Azure Load Balancer or Azure Traffic Manager**: These tools can distribute traffic evenly among VMs in your scale set, ensuring that no single VM becomes a bottleneck.
+
+2. **Scale Out**: Increase the number of VM instances in your scale set during peak load times. Azure VM Scale Sets support autoscaling based on metrics like CPU usage, memory usage, or a custom metric.
+
+3. **Use SSD Storage**: SSD storage offers faster disk I/O and can significantly improve the performance of your application.
+
+4. **Optimize Your Application**: Optimize your NestJS application by using techniques like lazy loading, AOT compilation, and compression.
+
+5. **Use Caching**: Use Azure Redis Cache or a similar service to cache frequently accessed data. This can significantly reduce the load on your database and improve your application's response times.
+
+6. **Use CDN**: Use Azure Content Delivery Network (CDN) to cache static resources closer to users. This can significantly improve load times for users who are geographically distant from your Azure region.
+
+7. **Optimize Docker Images**: Keep your Docker images as small as possible by using multi-stage builds, removing unnecessary files, and using .dockerignore files.
+
+8. **Monitor Performance**: Use Azure Monitor and Application Insights to monitor the performance of your application and VM Scale Set. This can help you identify and fix performance bottlenecks.
+
+9. **Use Proximity Placement Groups**: If your application components need to communicate with each other frequently, use Proximity Placement Groups to ensure that your VMs are located close to each other in the same data center.
+
+10. **Optimize Database Performance**: If you're using a database, ensure it's properly indexed and consider using read replicas to distribute read traffic.
+
+Remember, performance optimization is a continuous process and requires regular monitoring and adjustments based on your application's performance metrics.
