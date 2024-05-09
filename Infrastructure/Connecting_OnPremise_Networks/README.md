@@ -143,3 +143,17 @@ In this representation:
 - "VPN Client" is the client device connecting to the Azure virtual network.
 
 This diagram illustrates the connection between the Azure virtual network and the on-premise network via a Point-to-Site VPN, allowing communication between resources in both environments.
+
+Components and their relationships in a Point-to-Site VPN connection in Azure:
+
+1. **Client Computer**: This is the starting point of the VPN connection. It can be any device that supports VPN connectivity.
+
+2. **VPN Client**: This is the software installed on the client computer. It's responsible for initiating and maintaining the VPN connection.
+
+3. **Azure VPN Gateway**: This is the endpoint for the VPN connection in Azure. It's part of the Virtual Network and provides the entry point for the VPN connection.
+
+4. **Virtual Network (VNet)**: This is the network within Azure where your resources are located. The VPN Gateway is part of this network.
+
+5. **Azure Resources**: These are the resources within the VNet that the client computer can access over the VPN connection.
+
+The VPN connection is established from the VPN Client on the Client Computer to the Azure VPN Gateway. Once the connection is established, the Client Computer can access Azure Resources within the VNet as if it was directly connected to the network.
