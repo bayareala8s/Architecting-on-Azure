@@ -130,3 +130,23 @@ In this example, replace `<Databricks linked service name>` with the name of you
 
 Please note that this is a very basic example. The actual process of data transformation can be much more complex depending on the specific requirements of your project.
 
+### Troubleshooting an Azure Data Factory (ADF) pipeline
+
+Troubleshooting an Azure Data Factory (ADF) pipeline involves several steps. Here's a general approach:
+
+1. **Check the Pipeline Run Details**: In the Azure portal, navigate to your Data Factory instance, then go to the "Monitor" tab. Here, you can see a list of all pipeline runs. Click on a specific run to see more details about it. This includes the status of each activity in the pipeline, the start and end times, and any error messages.
+
+2. **Inspect Error Messages**: If a pipeline run failed, there should be an error message associated with it. This message can often provide clues about what went wrong. For example, it might indicate that there was a problem connecting to a data source, or that a certain transformation failed.
+
+3. **Check Activity Details**: Click on a specific activity in the pipeline run to see more details about it. This includes the input and output of the activity, the duration, and any error messages. If an activity failed, the error message can often provide clues about what went wrong.
+
+4. **Check Linked Services**: If the error message suggests that there was a problem connecting to a data source, check the linked service associated with that data source. Make sure that the connection information is correct and that the data source is accessible.
+
+5. **Check Datasets**: If the error message suggests that there was a problem with the data, check the dataset associated with the problematic activity. Make sure that the dataset is correctly defined and that the data it points to is in the expected format.
+
+6. **Check Transformations**: If the error message suggests that there was a problem with a transformation, check the transformation logic in your pipeline. Make sure that the transformation is correctly defined and that it can handle all possible input data.
+
+7. **Check Logs**: If you have enabled logging for your Data Factory, you can check the logs for more detailed information about what happened during the pipeline run. This can often provide more detailed information than the error messages in the Azure portal.
+
+Remember, the exact steps for troubleshooting can vary depending on the specific error and the configuration of your Data Factory. Always start by checking the error message and use that as a starting point for your investigation.
+
