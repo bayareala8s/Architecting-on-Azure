@@ -74,3 +74,59 @@ In this example, replace `<input dataset name>` with the name of your input data
 
 Please note that this is a very basic example. The actual process of data ingestion can be much more complex depending on the specific requirements of your project.
 
+### Transformation logic in Data Factory
+
+Azure Data Factory primarily focuses on orchestrating and automating data movement and transformation. However, it does not support complex transformations out of the box. For complex transformations, you would typically use Data Factory to orchestrate the movement of data and then call a compute service such as Azure Databricks, Azure HDInsight, or Azure Machine Learning for transformation.
+
+Here's an example of how you can use Azure Data Factory to orchestrate a data transformation process with Azure Databricks:
+
+1. **Create a Databricks Notebook**: First, you need to create a Databricks notebook that contains your transformation logic. For example, you might have a notebook that reads data from a CSV file, performs some transformations, and then writes the transformed data back to a different CSV file.
+
+2. **Create a Databricks Linked Service**: In your Data Factory, create a linked service that connects to your Databricks workspace.
+
+3. **Create a Databricks Dataset**: Create two datasets in your Data Factory, one for the input data and one for the output data. These datasets should point to the locations of your input and output CSV files.
+
+4. **Create a Pipeline with a Databricks Activity**: In your Data Factory, create a pipeline that includes a Databricks activity. This activity should point to the Databricks notebook you created earlier and use the Databricks linked service. The input and output of this activity should be the datasets you created.
+
+Here's an example of how you might define the Databricks activity in your pipeline:
+
+```json
+{
+    "name": "DatabricksTransformationActivity",
+    "type": "HDInsightSpark",
+    "linkedServiceName": {
+        "referenceName": "<Databricks linked service name>",
+        "type": "LinkedServiceReference"
+    },
+    "typeProperties": {
+        "rootPath": "<Databricks notebook path>",
+        "entryFilePath": "<Databricks notebook file>",
+        "sparkJobLinkedService": {
+            "referenceName": "<Azure Blob Storage linked service name>",
+            "type": "LinkedServiceReference"
+        },
+        "sparkJobFilePath": "<Path to input CSV file>",
+        "sparkJobArgs": [
+            "--output",
+            "<Path to output CSV file>"
+        ]
+    },
+    "inputs": [
+        {
+            "referenceName": "<Input dataset name>",
+            "type": "DatasetReference"
+        }
+    ],
+    "outputs": [
+        {
+            "referenceName": "<Output dataset name>",
+            "type": "DatasetReference"
+        }
+    ]
+}
+```
+
+In this example, replace `<Databricks linked service name>` with the name of your Databricks linked service, `<Databricks notebook path>` and `<Databricks notebook file>` with the path and file name of your Databricks notebook, `<Azure Blob Storage linked service name>` with the name of your Azure Blob Storage linked service, `<Path to input CSV file>` and `<Path to output CSV file>` with the paths to your input and output CSV files, and `<Input dataset name>` and `<Output dataset name>` with the names of your input and output datasets.
+
+Please note that this is a very basic example. The actual process of data transformation can be much more complex depending on the specific requirements of your project.
+
