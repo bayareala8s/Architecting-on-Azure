@@ -20,3 +20,57 @@ Key components of Azure Data Factory include:
 
 Overall, Azure Data Factory simplifies the process of data integration and management by providing a scalable and flexible platform for building data pipelines, orchestrating workflows, and transforming data across diverse environments.
 
+### Handle data ingestion in Azure Data Factory
+
+Azure Data Factory (ADF) is a cloud-based data integration service that allows you to create data-driven workflows for orchestrating and automating data movement and data transformation. Here's a basic step-by-step process on how to handle data ingestion in Azure Data Factory:
+
+1. **Create a Data Factory**: First, you need to create a Data Factory instance in your Azure portal.
+
+2. **Create Linked Services**: Linked services are much like connection strings, which define the connection information needed for Data Factory to connect to external resources. For instance, if you're ingesting data from a blob storage and then storing the transformed data into a SQL database, you would need two linked services - one for the blob storage and one for the SQL database.
+
+3. **Create Datasets**: Datasets are data structures of the data you want to ingest, which point to the data you want to move and transform. They are defined in the Data Factory and they represent data structures within the data stores, which simply point to or reference the data you want to use in your activities as inputs or outputs.
+
+4. **Create Pipelines**: Pipelines are a group of activities. In the case of data ingestion, the activities are mainly Copy activities. A Copy activity in Data Factory copies data from a source data store to a sink data store in a tabular format.
+
+5. **Monitor the Pipeline**: After the pipeline is created, you can monitor the pipeline from the Azure portal. You can view activity run details, set alerts and rerun activities if needed.
+
+Here's a basic example of how to create a pipeline with a Copy activity using Azure Data Factory:
+
+```json
+{
+    "name": "CopyPipeline",
+    "properties": {
+        "activities": [
+            {
+                "name": "CopyActivity",
+                "type": "Copy",
+                "inputs": [
+                    {
+                        "referenceName": "<input dataset name>",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "<output dataset name>",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "typeProperties": {
+                    "source": {
+                        "type": "BlobSource"
+                    },
+                    "sink": {
+                        "type": "SqlSink"
+                    }
+                }
+            }
+        ]
+    }
+}
+```
+
+In this example, replace `<input dataset name>` with the name of your input dataset (the data you want to ingest), and replace `<output dataset name>` with the name of your output dataset (where you want to store the ingested data). The `source` type is `BlobSource` and the `sink` type is `SqlSink`, which means this pipeline ingests data from a blob storage and stores it into a SQL database.
+
+Please note that this is a very basic example. The actual process of data ingestion can be much more complex depending on the specific requirements of your project.
+
