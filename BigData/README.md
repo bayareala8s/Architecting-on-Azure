@@ -124,3 +124,21 @@ Please replace the placeholders with your actual values. For example, replace `"
 This script creates a resource group, a storage account, a storage container, and an HDInsight Kafka cluster with 3 worker nodes (which are the Kafka brokers in this case) in the "West US 2" region.
 
 Please note that you need to have the Azure provider configured and the necessary permissions to create resources in Azure. Also, make sure to install the Terraform AzureRM Provider before running this script.
+
+### Azure Purview
+
+Azure Purview is a unified data governance service that helps you manage and govern your on-premises, multi-cloud, and software-as-a-service (SaaS) data. It provides a holistic, map-like view of your data landscape, making it easier for data consumers to discover valuable, trustworthy data.
+
+Key features of Azure Purview include:
+
+1. **Data Cataloging**: Azure Purview automatically scans and classifies data across your organization, creating a catalog that is easily searchable by data consumers.
+
+2. **Data Governance**: Azure Purview helps you implement and enforce data governance policies. This includes setting up access controls, monitoring data usage, and ensuring compliance with privacy regulations.
+
+3. **Data Lineage**: Azure Purview provides visualizations of data lineage, helping you understand where your data comes from, where it's going, and how it's transformed along the way.
+
+4. **Data Discovery**: Azure Purview makes it easy for data consumers to discover relevant and trustworthy data. The data catalog provides a user-friendly interface where users can search for data using business terms.
+
+5. **Integration**: Azure Purview integrates with various data sources across your organization, including on-premises SQL Server, multi-cloud data sources like Amazon AWS S3, and SaaS sources like Salesforce.
+
+By providing these capabilities, Azure Purview helps organizations achieve a more complete understanding of their data, improve compliance, and make better decisions based on high-quality, well-governed data.
