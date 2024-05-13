@@ -46,3 +46,36 @@ Azure Databricks can be integrated with Azure Virtual Network (VNet) using three
 3. **User-Defined Routes (UDR)**: UDRs allow you to override Azure's default system routes or to add additional routes to a subnet's route table. You can use UDRs to force traffic from your VNet to Azure Databricks to go through a Network Virtual Appliance (NVA) for inspection or additional routing logic. This method provides the most control over your network traffic, but it also requires the most configuration and management.
 
 In summary, Private Endpoints provide the highest level of security and are recommended for most workloads. Service Endpoints are less secure but may be easier to set up. UDRs provide the most control over your network traffic but require the most configuration and management. The best method for your workload will depend on your specific security requirements and network architecture.
+
+### Architecture of Azure Databricks and how does it differ from Apache Spark?
+
+Azure Databricks is an Apache Spark-based analytics platform optimized for the Microsoft Azure cloud services platform. It is a fast, easy, and collaborative Apache Spark-based big data analytics service designed for data science and data engineering.
+
+The architecture of Azure Databricks is a combination of both Azure and Databricks. It integrates deeply with Azure services, particularly Azure Storage and Azure SQL Database. It also provides an interactive workspace that enables collaboration between data engineers, data scientists, and machine learning engineers.
+
+Here are the key components of Azure Databricks:
+
+1. **Databricks Workspace**: This is the user interface for managing and running Databricks jobs. It includes an interactive notebook environment where you can run Spark code, as well as tools for managing clusters and jobs.
+
+2. **Databricks Runtime**: This is a set of core components that run on the clusters in Azure Databricks, including Apache Spark, Python, Java, and Scala.
+
+3. **Databricks File System (DBFS)**: This is a distributed file system installed on Azure Databricks clusters. It allows you to store data such as uploaded files and the results of job computations.
+
+4. **Clusters**: These are sets of computation resources (virtual machines) that execute the Spark jobs you submit through the Databricks Workspace. You can create and manage clusters using the Databricks Workspace.
+
+5. **Jobs**: These are automated, scheduled, or manually triggered Spark applications. You can create and manage jobs using the Databricks Workspace.
+
+Azure Databricks differs from Apache Spark in several ways:
+
+1. **Managed Service**: Azure Databricks is a fully managed service that provides a reliable and scalable platform for running Apache Spark. This means you don't have to worry about setting up, configuring, or managing your Spark clusters.
+
+2. **Deep Integration with Azure**: Azure Databricks is deeply integrated with other Azure services, making it easier to build end-to-end analytics pipelines.
+
+3. **Collaborative Workspace**: Azure Databricks provides a collaborative workspace that allows data scientists, data engineers, and business analysts to work together more effectively.
+
+4. **Optimized Performance**: Azure Databricks includes several performance optimizations that make it run faster than standard Apache Spark.
+
+5. **Enterprise Security**: Azure Databricks includes enterprise-level security features, including integration with Azure Active Directory for identity and access management, role-based controls, and data encryption.
+
+6. **Support and SLAs**: With Azure Databricks, you get dedicated support and service level agreements (SLAs) from Microsoft, which you don't get with open-source Apache Spark.
+
