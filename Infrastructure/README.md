@@ -218,6 +218,22 @@ Securing communication between on-premises networks and Azure Cloud Services is 
 
 Remember, security is not a one-time task but an ongoing process. Regularly review and update your security measures to ensure they meet your current needs and the latest security threats.
 
+### Different routing service in Azure for web applications
+
+Azure provides several services for routing web application traffic, each with its own use cases and features:
+
+1. **Azure Traffic Manager**: This is a DNS-based traffic load balancer that distributes traffic optimally to services across global Azure regions while providing high availability and responsiveness.
+
+2. **Azure Application Gateway**: This is a web traffic load balancer that enables you to manage traffic to your web applications. It's a Layer 7 load balancer, meaning it works at the application layer of the OSI model. It provides features like SSL termination, cookie-based session affinity, and URL-based routing.
+
+3. **Azure Front Door**: This is a scalable and secure entry point for fast delivery of your global web applications. It provides global load balancing and site acceleration service to applications, and it allows you to define, manage, and monitor the global routing for your web traffic by optimizing for best performance and instant global failover for high availability.
+
+4. **Azure Load Balancer**: This is a network traffic load balancer that enables you to distribute traffic evenly among VMs in your application. It operates at Layer 4 (transport) of the OSI network model.
+
+5. **Azure API Management**: This is a turnkey solution for publishing APIs to external and internal customers. It provides features like securing APIs, throttling, analytics, and developer portal.
+
+The choice between these services depends on your specific needs, such as whether you need to route traffic between global regions, between services in a single region, or manage APIs.
+
 
 
 
