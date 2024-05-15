@@ -55,3 +55,45 @@ Azure Content Delivery Network (CDN) provides several benefits for content deliv
 8. **Developer Friendly**: Azure CDN provides a RESTful API, allowing developers to manage and control the service programmatically.
 
 Remember, the benefits you get can depend on your specific use case and how you configure and use Azure CDN.
+
+### Azure Front Door
+
+Azure Front Door is a networking service that provides secure and scalable routing for web traffic. It's designed to optimize and secure the delivery of web applications, APIs, and content across different regions.
+
+Here are some key features of Azure Front Door:
+
+1. **Global HTTP Load Balancing with Instant Failover**: Azure Front Door provides built-in load balancing with instant failover capabilities. This ensures high availability and reliability by distributing traffic to the fastest and most available service.
+
+2. **URL-Based Routing**: Azure Front Door allows you to route traffic based on URL paths. This means you can direct traffic to different backend services based on the URL path.
+
+3. **SSL Offload**: Azure Front Door can terminate, decrypt, and re-encrypt SSL/TLS connections with your backends, reducing the load on your servers.
+
+4. **Web Application Firewall (WAF)**: Azure Front Door integrates with Azure WAF to provide centralized protection of your web applications from common exploits and vulnerabilities.
+
+5. **DDoS Protection**: Azure Front Door provides automatic DDoS protection, safeguarding your applications from DDoS attacks.
+
+6. **Session Affinity**: Azure Front Door can keep a user's session on the same application backend for the duration of their session (sticky sessions).
+
+7. **Custom Domains and SSL**: You can use your own custom domain names with Azure Front Door and it provides free SSL certificate management.
+
+Azure Front Door is particularly useful for applications that require high availability and performance, and it's often used in conjunction with other Azure services to build robust, scalable, and secure applications.
+
+### Key features of Azure Front Door
+
+Azure Front Door provides several key features for optimizing and securing web traffic:
+
+1. **Global HTTP Load Balancing with Instant Failover**: Azure Front Door provides built-in load balancing with instant failover capabilities. This ensures high availability and reliability by distributing traffic to the fastest and most available service.
+
+2. **URL-Based Routing**: Azure Front Door allows you to route traffic based on URL paths. This means you can direct traffic to different backend services based on the URL path.
+
+3. **SSL Offload**: Azure Front Door can terminate, decrypt, and re-encrypt SSL/TLS connections with your backends, reducing the load on your servers.
+
+4. **Web Application Firewall (WAF)**: Azure Front Door integrates with Azure WAF to provide centralized protection of your web applications from common exploits and vulnerabilities.
+
+5. **DDoS Protection**: Azure Front Door provides automatic DDoS protection, safeguarding your applications from DDoS attacks.
+
+6. **Session Affinity**: Azure Front Door can keep a user's session on the same application backend for the duration of their session (sticky sessions).
+
+7. **Custom Domains and SSL**: You can use your own custom domain names with Azure Front Door and it provides free SSL certificate management.
+
+These features make Azure Front Door a powerful tool for managing, optimizing, and securing global web traffic.
