@@ -119,4 +119,28 @@ Securing a NestJS Docker application in an Azure VM Scale Set involves several b
 
 Remember, security is a continuous process and requires regular review and updates to your security policies and configurations.
 
-### 
+### Some common built-in RBAC roles in Azure
+
+Azure provides several built-in Role-Based Access Control (RBAC) roles that you can assign to users, groups, and services. Here are some of the most common ones:
+
+1. **Owner**: Has full access to all resources including the right to delegate access to others.
+
+2. **Contributor**: Can create and manage all types of Azure resources but can’t grant access to others.
+
+3. **Reader**: Can view existing Azure resources.
+
+4. **User Access Administrator**: Can manage user access to Azure resources.
+
+5. **Network Contributor**: Can manage all network resources.
+
+6. **Storage Account Contributor**: Can manage storage accounts.
+
+7. **Virtual Machine Contributor**: Can manage virtual machines.
+
+8. **Web Plan Contributor**: Can manage web plans.
+
+9. **SQL DB Contributor**: Can manage SQL databases.
+
+10. **Security Admin**: Can manage security components, security policies, and no access to user or group management.
+
+Remember, these are just a few examples. Azure provides many more built-in roles, and you can also create custom roles if the built-in roles do not meet your needs. Always assign the least privilege necessary to perform a task to follow best security practices.
