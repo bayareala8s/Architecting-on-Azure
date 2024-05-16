@@ -142,3 +142,14 @@ Key features of Azure Purview include:
 5. **Integration**: Azure Purview integrates with various data sources across your organization, including on-premises SQL Server, multi-cloud data sources like Amazon AWS S3, and SaaS sources like Salesforce.
 
 By providing these capabilities, Azure Purview helps organizations achieve a more complete understanding of their data, improve compliance, and make better decisions based on high-quality, well-governed data.
+
+### Azure rtorage data replication types
+
+Azure Storage offers several types of data replication to ensure durability and high availability. Here are the options:
+
+- `LRS` (Locally redundant storage): Makes multiple synchronous copies of your data within a single datacenter.
+- `ZRS` (Zone-redundant storage): Stores three copies of your data. It replicates your data across 2 to 3 facilities, either within a single region or across two regions.
+- `GRS` (Geo-redundant storage): Replicates your data to a secondary region (hundreds of miles away from the primary location of the source data).
+- `RAGRS` (Read-access geo-redundant storage): Same as GRS, but clients can read the data at the secondary location.
+
+In your Terraform code, you can set the `account_replication_type` variable to any of these options, depending on your requirements for data durability and availability.
