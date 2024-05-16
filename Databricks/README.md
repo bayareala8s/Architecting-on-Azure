@@ -81,19 +81,23 @@ Azure Databricks differs from Apache Spark in several ways:
 
 ### DataBricks Unity Catalog
 
-Azure Databricks Unity Catalog is a feature of Azure Databricks that provides a unified data access layer where you can securely discover, share, and govern your data across data sources and data services. It allows you to create a centralized, curated, and secured data access layer that simplifies data access and hides the complexity of underlying data sources.
+Azure Databricks Unity Catalog provides a unified data access layer where you can securely discover, share, and govern your data across data sources and data services. Here are some key features:
 
-Here are some key features of the Azure Databricks Unity Catalog:
+1. **Unified Data Access**: Unity Catalog provides a single access point for all your data across various data sources and data services. This simplifies data access and hides the complexity of underlying data sources.
 
-1. **Unified Data Access**: It provides a single access point for all your data across various data sources and data services.
+2. **Data Discovery**: Unity Catalog allows you to discover data across your organization with a searchable catalog. This makes it easier to find and use the data you need.
 
-2. **Data Discovery**: It allows you to discover data across your organization with a searchable catalog.
+3. **Data Sharing**: Unity Catalog enables you to share data across teams and workspaces. This promotes collaboration and ensures that everyone has access to the data they need.
 
-3. **Data Sharing**: It enables you to share data across teams and workspaces while maintaining security and governance.
+4. **Data Governance**: Unity Catalog provides fine-grained access control and audit logs. This helps ensure that your data is used appropriately and that you can track who is accessing your data and what they're doing with it.
 
-4. **Data Governance**: It provides fine-grained access control and audit logs for data governance.
+5. **Integration with Data Services**: Unity Catalog integrates with various Azure data services like Azure Synapse Analytics, Power BI, and more. This allows you to use your data in a variety of ways and take advantage of the capabilities of these other services.
 
-5. **Integration with Data Services**: It integrates with various Azure data services like Azure Synapse Analytics, Power BI, and more.
+6. **Data Lineage**: Unity Catalog provides data lineage capabilities, allowing you to track the origin and transformation of your data. This is crucial for understanding your data's history and ensuring its integrity.
+
+7. **Schema Evolution**: Unity Catalog supports schema evolution, allowing you to easily change your data's schema as your needs change. This ensures that your data remains usable and relevant over time.
+
+8. **Data Versioning**: Unity Catalog supports data versioning, allowing you to keep track of different versions of your data. This is useful for tracking changes over time and for ensuring that you can revert to previous versions if necessary.
 
 To use the Unity Catalog in Azure Databricks, you need to create tables that point to your data stored in various data sources like Azure Blob Storage, Azure Data Lake Storage, etc. Here is an example of how you can create a table in Databricks:
 
