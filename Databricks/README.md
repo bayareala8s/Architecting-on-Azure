@@ -79,3 +79,40 @@ Azure Databricks differs from Apache Spark in several ways:
 
 6. **Support and SLAs**: With Azure Databricks, you get dedicated support and service level agreements (SLAs) from Microsoft, which you don't get with open-source Apache Spark.
 
+### DataBricks Unity Catalog
+
+Azure Databricks Unity Catalog is a feature of Azure Databricks that provides a unified data access layer where you can securely discover, share, and govern your data across data sources and data services. It allows you to create a centralized, curated, and secured data access layer that simplifies data access and hides the complexity of underlying data sources.
+
+Here are some key features of the Azure Databricks Unity Catalog:
+
+1. **Unified Data Access**: It provides a single access point for all your data across various data sources and data services.
+
+2. **Data Discovery**: It allows you to discover data across your organization with a searchable catalog.
+
+3. **Data Sharing**: It enables you to share data across teams and workspaces while maintaining security and governance.
+
+4. **Data Governance**: It provides fine-grained access control and audit logs for data governance.
+
+5. **Integration with Data Services**: It integrates with various Azure data services like Azure Synapse Analytics, Power BI, and more.
+
+To use the Unity Catalog in Azure Databricks, you need to create tables that point to your data stored in various data sources like Azure Blob Storage, Azure Data Lake Storage, etc. Here is an example of how you can create a table in Databricks:
+
+```python
+# PySpark
+from pyspark.sql import SparkSession
+
+# Create a SparkSession
+spark = SparkSession.builder.getOrCreate()
+
+# Define the data source
+data_source = "/mnt/datalake/data.parquet"
+
+# Read the data
+df = spark.read.parquet(data_source)
+
+# Create a table
+df.write.saveAsTable("my_table")
+```
+
+In this example, a table named `my_table` is created in the Unity Catalog that points to the data stored in `data_source`. You can then query this table using SQL or DataFrame API.
+
