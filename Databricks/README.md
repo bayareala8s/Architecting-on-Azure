@@ -315,3 +315,70 @@ Remember to replace "my_database" and "my_table" with the names of your database
 
 Please note that the above steps are a general guide and the exact steps may vary depending on your specific requirements and the configuration of your Azure and Databricks environments.
 
+To create an access connector for Azure Databricks using Terraform, you can use the `azurerm_databricks_workspace` resource. However, as of the current version of the AzureRM provider (v2.0), there is no direct support for creating access connectors in Azure Databricks.
+
+You can create the Databricks workspace and then manually set up the access connector in the Azure portal or using the Databricks CLI or REST API.
+
+Here's an example of how you can create a Databricks workspace using Terraform:
+
+```terraform
+resource "azurerm_databricks_workspace" "example" {
+  name                        = "example"
+  resource_group_name         = azurerm_resource_group.example.name
+  location                    = azurerm_resource_group.example.location
+  sku                         = "standard"
+  managed_resource_group_name = "example-resources"
+}
+```
+
+In this example, replace `"example"` with your desired workspace name, and `"example-resources"` with your desired resource group name. The `azurerm_resource_group.example.name` and `azurerm_resource_group.example.location` refer to the name and location of your Azure resource group, which you should have defined elsewhere in your Terraform configuration.
+
+After creating the workspace, you would need to manually create the access connector. Please refer to the official Azure Databricks documentation for more information on how to do this.
+
+
+Creating a Unity Catalog metastore using Terraform is not directly supported as of the current version of the AzureRM provider (v2.0). The AzureRM provider does not have a specific resource for creating a Unity Catalog metastore.
+
+However, you can create resources in Azure that are prerequisites for a Unity Catalog metastore, such as an Azure Storage account or a Databricks workspace, using Terraform. Here's an example of how you can create a Databricks workspace and a Storage account:
+
+```terraform
+# Provider configuration for Azure
+provider "azurerm" {
+  features {}
+}
+
+# Azure Resource Group resource
+resource "azurerm_resource_group" "main" {
+  name     = "your_resource_group_name"
+  location = "your_location"
+}
+
+# Azure Databricks Workspace resource
+resource "azurerm_databricks_workspace" "main" {
+  name                        = "your_databricks_workspace_name"
+  resource_group_name         = azurerm_resource_group.main.name
+  location                    = azurerm_resource_group.main.location
+  sku                         = "standard"
+  managed_resource_group_name = "your_managed_resource_group_name"
+}
+
+# Azure Storage Account resource
+resource "azurerm_storage_account" "main" {
+  name                     = "your_storage_account_name"
+  resource_group_name      = azurerm_resource_group.main.name
+  location                 = azurerm_resource_group.main.location
+  account_tier             = "Standard"
+  account_replication_type = "RAGRS"
+  account_kind             = "StorageV2"
+  is_hns_enabled           = true
+}
+
+# Azure Storage Data Lake Gen2 Filesystem resource
+resource "azurerm_storage_data_lake_gen2_filesystem" "main" {
+  name               = "your_filesystem_name"
+  storage_account_id = azurerm_storage_account.main.id
+}
+```
+
+In this example, replace `"your_resource_group_name"`, `"your_location"`, `"your_databricks_workspace_name"`, `"your_managed_resource_group_name"`, `"your_storage_account_name"`, and `"your_filesystem_name"` with your desired names and location.
+
+After creating these resources, you would need to manually create the Unity Catalog metastore in the Azure portal or using the Azure CLI or REST API. Please refer to the official Azure documentation for more information on how to do this.
