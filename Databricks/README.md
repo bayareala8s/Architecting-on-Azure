@@ -379,6 +379,157 @@ resource "azurerm_storage_data_lake_gen2_filesystem" "main" {
 }
 ```
 
+
 In this example, replace `"your_resource_group_name"`, `"your_location"`, `"your_databricks_workspace_name"`, `"your_managed_resource_group_name"`, `"your_storage_account_name"`, and `"your_filesystem_name"` with your desired names and location.
 
 After creating these resources, you would need to manually create the Unity Catalog metastore in the Azure portal or using the Azure CLI or REST API. Please refer to the official Azure documentation for more information on how to do this.
+
+### Managed Tables in Unity Catalog
+
+Managed tables in Unity Catalog are a type of table where both the data and the metadata are managed by the Unity Catalog. This means that when you create a managed table, Unity Catalog not only stores the table definition in the catalog, but it also controls the underlying data in the Azure Data Lake Storage.
+
+Here are some key points about managed tables:
+
+1. **Data Storage**: The data for managed tables is stored in a specified location in Azure Data Lake Storage. This location is managed by Unity Catalog, and users do not need to specify it when creating the table.
+
+2. **Table Creation**: When you create a managed table, Unity Catalog automatically creates the necessary directory in Azure Data Lake Storage.
+
+3. **Data Deletion**: If you delete a managed table, both the metadata in the Unity Catalog and the data in Azure Data Lake Storage are deleted.
+
+4. **Schema Evolution**: Managed tables support schema evolution. You can add, delete, or change columns and Unity Catalog will keep track of these changes.
+
+5. **ACID Transactions**: Managed tables support ACID transactions. This means that you can perform operations like insert, update, and delete on the table, and these operations are atomic, consistent, isolated, and durable.
+
+6. **Partitioning**: Managed tables can be partitioned. Partitioning can improve query performance by limiting the amount of data read by a query.
+
+Managed tables are a good choice when you want Unity Catalog to handle data storage and management, and when you want to take advantage of features like schema evolution and ACID transactions.
+
+Creating a managed table in Unity Catalog typically involves using SQL commands through a SQL interface. Here's an example of how you might create a managed table:
+
+```sql
+CREATE TABLE orders (
+    order_id INT,
+    customer_id INT,
+    order_date DATE,
+    product_id INT,
+    quantity INT,
+    order_status STRING
+)
+USING PARQUET
+OPTIONS (
+    'compression' = 'snappy'
+)
+PARTITIONED BY (order_date)
+```
+
+In this example, a new managed table named `orders` is created with the specified schema. The `USING PARQUET` clause specifies that the data in the table should be stored in Parquet format, and the `OPTIONS` clause specifies that the data should be compressed using the Snappy compression codec. The `PARTITIONED BY` clause specifies that the table should be partitioned by the `order_date` column.
+
+Please note that the exact SQL syntax and options available may vary depending on the specific SQL interface you are using with Unity Catalog. Always refer to the official documentation for the most accurate and up-to-date information.
+
+### Benefits of using managed tables in Unity Catalog
+
+Managed tables in Unity Catalog offer several benefits:
+
+1. **Data Storage Management**: Unity Catalog manages the data storage location in Azure Data Lake Storage, relieving users from specifying it during table creation.
+
+2. **Automatic Directory Creation**: When a managed table is created, Unity Catalog automatically creates the necessary directory in Azure Data Lake Storage.
+
+3. **Data Deletion**: Deleting a managed table removes both the metadata in the Unity Catalog and the data in Azure Data Lake Storage, ensuring data consistency.
+
+4. **Schema Evolution**: Managed tables support schema evolution, allowing users to add, delete, or change columns while Unity Catalog keeps track of these changes.
+
+5. **ACID Transactions**: Managed tables support ACID (Atomicity, Consistency, Isolation, Durability) transactions, enabling operations like insert, update, and delete to be performed on the table in a reliable manner.
+
+6. **Partitioning**: Managed tables can be partitioned to improve query performance by limiting the amount of data read by a query.
+
+These features make managed tables a good choice when you want Unity Catalog to handle data storage and management, and when you want to take advantage of features like schema evolution and ACID transactions.
+
+### Best practices for managing data in Unity Catalog
+
+Managing data in Unity Catalog involves several best practices to ensure efficient and effective data management. Here are some of them:
+
+1. **Schema Design**: Design your table schemas carefully. A well-designed schema can improve query performance and make it easier to work with your data.
+
+2. **Partitioning**: Use partitioning to improve query performance. Partitioning divides your table into parts based on the values of one or more columns. When you query a partitioned table, Unity Catalog only needs to read the data in the relevant partitions.
+
+3. **Managed Tables**: Use managed tables when possible. Managed tables allow Unity Catalog to handle data storage and management, and they support features like schema evolution and ACID transactions.
+
+4. **Data Formats**: Choose the right data format for your needs. Different data formats have different strengths and weaknesses. For example, Parquet is a columnar format that is great for analytical queries, while Avro is a row-based format that is better for write-heavy workloads.
+
+5. **Compression**: Use compression to reduce the size of your data and improve query performance. Different data formats support different compression codecs, so choose the one that best suits your needs.
+
+6. **Data Cleaning**: Clean your data before loading it into Unity Catalog. This includes tasks like removing duplicates, handling missing values, and converting data types.
+
+7. **Access Control**: Use Unity Catalog's access control features to manage who can access your data. You can set permissions at the table level or the column level.
+
+8. **Data Lifecycle Management**: Regularly review and manage your data. This includes tasks like archiving old data, deleting unnecessary data, and updating outdated data.
+
+9. **Monitoring and Logging**: Monitor your Unity Catalog usage and set up logging. This can help you identify performance issues, track usage, and understand how your data is being used.
+
+10. **Documentation**: Document your tables and columns. This makes it easier for others to understand your data and how to use it.
+
+Remember, these are general best practices and might need to be adjusted based on your specific use case and requirements.
+
+### External Tables in Unity Catalog
+
+External tables in Unity Catalog are a type of table where the metadata is managed by the Unity Catalog, but the data itself is stored outside of the Unity Catalog, typically in an external storage system like Azure Data Lake Storage. This means that when you create an external table, Unity Catalog stores the table definition in the catalog, but the underlying data is not managed by Unity Catalog.
+
+Here are some key points about external tables:
+
+1. **Data Storage**: The data for external tables is stored in a location specified by the user. This location is not managed by Unity Catalog.
+
+2. **Table Creation**: When you create an external table, you need to specify the location of the data.
+
+3. **Data Deletion**: If you delete an external table, only the metadata in the Unity Catalog is deleted. The data in the external storage system remains intact.
+
+4. **Schema Evolution**: External tables support schema evolution. You can add, delete, or change columns and Unity Catalog will keep track of these changes.
+
+5. **ACID Transactions**: External tables do not support ACID transactions. This means that operations like insert, update, and delete are not atomic, consistent, isolated, and durable.
+
+6. **Partitioning**: External tables can be partitioned. Partitioning can improve query performance by limiting the amount of data read by a query.
+
+External tables are a good choice when you want to keep your data in an external storage system and when you want the data to persist even if the table is deleted in Unity Catalog.
+
+Creating an external table in Unity Catalog typically involves using SQL commands through a SQL interface. Here's an example of how you might create an external table:
+
+```sql
+CREATE EXTERNAL TABLE orders (
+    order_id INT,
+    customer_id INT,
+    order_date DATE,
+    product_id INT,
+    quantity INT,
+    order_status STRING
+)
+USING PARQUET
+OPTIONS (
+    'path' = 'abfss://data@mydatalake.dfs.core.windows.net/orders/',
+    'compression' = 'snappy'
+)
+PARTITIONED BY (order_date)
+```
+
+In this example, a new external table named `orders` is created with the specified schema. The `USING PARQUET` clause specifies that the data in the table is stored in Parquet format, and the `OPTIONS` clause specifies the path to the data in Azure Data Lake Storage and that the data should be compressed using the Snappy compression codec. The `PARTITIONED BY` clause specifies that the table should be partitioned by the `order_date` column.
+
+Please note that the exact SQL syntax and options available may vary depending on the specific SQL interface you are using with Unity Catalog. Always refer to the official documentation for the most accurate and up-to-date information.
+
+
+
+### Considerations for choosing between managed tables and external tables in Unity Catalog
+
+Choosing between managed tables and external tables in Unity Catalog depends on several factors:
+
+1. **Data Ownership**: If the data is owned and managed by the Unity Catalog, then managed tables are a good choice. If the data is owned by an external system and you want to keep the data even if the table is dropped in Unity Catalog, then external tables are a better choice.
+
+2. **Data Location**: Managed tables store data in a location managed by Unity Catalog. If you want to specify a custom location for your data, you should use an external table.
+
+3. **Data Lifecycle**: If you want the data to be deleted when the table is dropped, use a managed table. If you want the data to persist even after the table is dropped, use an external table.
+
+4. **Schema Evolution**: Managed tables in Unity Catalog support schema evolution, which means you can add, delete, or change columns and Unity Catalog will keep track of these changes. If you need this feature, managed tables are a better choice.
+
+5. **ACID Transactions**: Managed tables support ACID transactions, which means you can perform operations like insert, update, and delete on the table, and these operations are atomic, consistent, isolated, and durable. If you need this feature, managed tables are a better choice.
+
+6. **Partitioning**: Both managed and external tables can be partitioned. Partitioning can improve query performance by limiting the amount of data read by a query.
+
+Remember, these are general considerations and the best choice depends on your specific use case and requirements.
+
