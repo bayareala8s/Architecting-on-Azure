@@ -245,7 +245,7 @@ Certainly! The Unity Catalog architecture typically consists of several intercon
 
 Each of these components plays a crucial role in the Unity Catalog architecture, enabling efficient management, discovery, and utilization of data assets within an organization's data ecosystem.
 
-Certainly! Below is a visual text diagram of the Unity Catalog architecture along with each component:
+Below is a visual text diagram of the Unity Catalog architecture along with each component:
 
 ```
             User Interface
