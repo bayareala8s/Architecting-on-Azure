@@ -120,3 +120,46 @@ df.write.saveAsTable("my_table")
 
 In this example, a table named `my_table` is created in the Unity Catalog that points to the data stored in `data_source`. You can then query this table using SQL or DataFrame API.
 
+### Unity Catalog Object Model
+
+The Unity Catalog in Azure Databricks is built on top of the Apache Spark Catalog and extends it with additional features. The object model of the Unity Catalog includes the following components:
+
+1. **Databases**: These are containers for tables, views, and functions. In the context of the Unity Catalog, a database is a logical grouping of tables.
+
+2. **Tables and Views**: A table is a structured dataset. A view is a named set of SQL operations that produces a result set. In the Unity Catalog, you can create tables that point to data in various data sources.
+
+3. **Partitions**: These are a way to divide a table into parts based on the values of columns. Partitions allow for faster data access.
+
+4. **Functions**: These are named sequences of operations that can be invoked with a SQL expression.
+
+5. **Properties**: These are used to specify settings for databases, tables, and views.
+
+Here is a simple example of how these components can be used in a PySpark script:
+
+```python
+from pyspark.sql import SparkSession
+
+# Create a SparkSession
+spark = SparkSession.builder.getOrCreate()
+
+# Create a database
+spark.sql("CREATE DATABASE my_database")
+
+# Use the database
+spark.sql("USE my_database")
+
+# Create a table
+spark.sql("CREATE TABLE my_table (id INT, name STRING)")
+
+# Create a view
+spark.sql("CREATE VIEW my_view AS SELECT name FROM my_table WHERE id > 100")
+
+# Create a function
+spark.sql("CREATE FUNCTION my_function AS 'org.apache.hadoop.hive.ql.udf.UDFPI'")
+
+# Set a table property
+spark.sql("ALTER TABLE my_table SET TBLPROPERTIES ('created.by.user' = 'user1')")
+```
+
+In this example, a database named `my_database` is created, a table named `my_table` is created in this database, a view named `my_view` is created based on this table, a function named `my_function` is created, and a property is set for the table.
+
