@@ -1,3 +1,29 @@
+### Overview
+
+Azure Databricks is an Apache Spark-based analytics platform optimized for the Microsoft Azure cloud services platform. It provides a collaborative environment where data scientists, data engineers, and business analysts can work together. Here are some key features:
+
+1. **Workspace**: A workspace is an environment for accessing all of your Databricks assets. A workspace organizes objects (notebooks, libraries, and experiments) into folders, and provides access to data objects and computational resources.
+
+2. **Notebooks**: Notebooks are a set of any number of cells that allow for code execution, and provide a complete and self-contained record of a computation that can be converted to various formats and shared with others.
+
+3. **Clusters**: Databricks clusters provide a unified platform for running all your data analytics workloads. Clusters are set up, configured, and fine-tuned to ensure your data and analytics workloads on Databricks run reliably and at optimum speed.
+
+4. **Jobs**: Jobs are the mechanism by which you can schedule your notebooks or libraries to run periodically against an existing cluster or a new cluster.
+
+5. **Tables**: Tables are named, versioned, and help in managing the lifecycle of data. In Databricks, you can create tables based on your datasets and then use them in Spark SQL or DataFrame operations.
+
+6. **MLflow**: MLflow is an open-source platform for managing the end-to-end machine learning lifecycle. It provides capabilities for experiment tracking, reproducible runs, model management, and model deployment.
+
+7. **Delta Lake**: Delta Lake is an open-source storage layer that brings ACID transactions to Apache Spark and big data workloads. It provides capabilities like schema enforcement, schema evolution, and audit history.
+
+8. **Security**: Azure Databricks provides enterprise-grade security with features like Azure Active Directory integration, role-based access control, data encryption, and private network connectivity.
+
+9. **Integration**: Azure Databricks is natively integrated with various Azure services like Azure Synapse Analytics, Power BI, Azure Machine Learning, and Azure Data Factory for a seamless data analytics workflow.
+
+10. **Collaboration**: Azure Databricks allows for real-time collaboration between data scientists and engineers, enabling them to work together on the same notebook at the same time.
+
+Remember, always refer to the official documentation for the most accurate and up-to-date information.
+
 ### Azure Databricks - Platform Architect & Network Topology
 
 Azure Databricks is an Apache Spark-based analytics platform optimized for the Microsoft Azure cloud services platform. It provides a unified analytics platform that reduces the complexity of building big data and AI solutions.
