@@ -533,3 +533,67 @@ Choosing between managed tables and external tables in Unity Catalog depends on 
 
 Remember, these are general considerations and the best choice depends on your specific use case and requirements.
 
+
+### Delta Tables in Unity Catalog
+
+Delta Lake is an open-source storage layer that brings ACID (Atomicity, Consistency, Isolation, Durability) transactions to Apache Spark and big data workloads. It's a format that Unity Catalog can use to store and manage tables.
+
+Delta tables in Unity Catalog are a type of table where both the data and the metadata are managed by the Unity Catalog. This means that when you create a Delta table, Unity Catalog not only stores the table definition in the catalog, but it also controls the underlying data in the Azure Data Lake Storage.
+
+Here are some key points about Delta tables:
+
+1. **ACID Transactions**: Delta tables support ACID transactions. This means that you can perform operations like insert, update, and delete on the table, and these operations are atomic, consistent, isolated, and durable.
+
+2. **Schema Evolution**: Delta tables support schema evolution. You can add, delete, or change columns and Unity Catalog will keep track of these changes.
+
+3. **Time Travel**: Delta tables support time travel, which allows you to query an older snapshot of the table.
+
+4. **Upserts and Deletes**: Delta tables support upserts (updates and inserts) and deletes, which are not typically supported in other file formats or systems like Parquet, CSV, or JSON.
+
+5. **Scalable Metadata Handling**: Delta tables handle metadata in a way that is scalable, so you can work with a large number of files and partitions without any performance issues.
+
+Creating a Delta table in Unity Catalog typically involves using SQL commands through a SQL interface. Here's an example of how you might create a Delta table:
+
+```sql
+CREATE TABLE events (
+    date DATE,
+    eventId STRING,
+    eventType STRING,
+    data STRING)
+USING DELTA
+PARTITIONED BY (date)
+```
+
+In this example, a new Delta table named `events` is created with the specified schema. The `USING DELTA` clause specifies that the data in the table should be stored in Delta format. The `PARTITIONED BY` clause specifies that the table should be partitioned by the `date` column.
+
+Please note that the exact SQL syntax and options available may vary depending on the specific SQL interface you are using with Unity Catalog. Always refer to the official documentation for the most accurate and up-to-date information.
+
+### Considerations for choosing between managed tables, external tables, delta tables in Unity Catalog
+
+Choosing between managed tables, external tables, and Delta tables in Unity Catalog depends on several factors:
+
+1. **Data Ownership**: If the data is owned and managed by the Unity Catalog, then managed tables are a good choice. If the data is owned by an external system and you want to keep the data even if the table is dropped in Unity Catalog, then external tables are a better choice.
+
+2. **Data Location**: Managed tables store data in a location managed by Unity Catalog. If you want to specify a custom location for your data, you should use an external table.
+
+3. **Data Lifecycle**: If you want the data to be deleted when the table is dropped, use a managed table. If you want the data to persist even after the table is dropped, use an external table.
+
+4. **Schema Evolution**: Managed tables in Unity Catalog support schema evolution, which means you can add, delete, or change columns and Unity Catalog will keep track of these changes. If you need this feature, managed tables are a better choice.
+
+5. **ACID Transactions**: Managed tables support ACID transactions, which means you can perform operations like insert, update, and delete on the table, and these operations are atomic, consistent, isolated, and durable. If you need this feature, managed tables are a better choice.
+
+6. **Partitioning**: Both managed and external tables can be partitioned. Partitioning can improve query performance by limiting the amount of data read by a query.
+
+7. **Delta Tables**: Delta tables are a type of managed table that provides additional features like ACID transactions, schema evolution, time travel, upserts and deletes, and scalable metadata handling. If you need these features, Delta tables are a better choice.
+
+Here are some real-world examples:
+
+- **Managed Table**: If you are ingesting data from a streaming source into Unity Catalog and you want to perform operations like insert, update, and delete on the data, a managed table would be a good choice. The data is owned and managed by Unity Catalog, and you can take advantage of features like schema evolution and ACID transactions.
+
+- **External Table**: If you have data in an Azure Data Lake Storage account and you want to query this data using Unity Catalog, but you don't want Unity Catalog to manage the data, an external table would be a good choice. The data remains in the Azure Data Lake Storage account, and if you delete the table in Unity Catalog, the data is not deleted.
+
+- **Delta Table**: If you are building a data lake in Azure Data Lake Storage and you want to take advantage of features like ACID transactions, schema evolution, time travel, upserts and deletes, and scalable metadata handling, a Delta table would be a good choice. The data and metadata are managed by Unity Catalog, and the data is stored in Delta format in Azure Data Lake Storage.
+
+Remember, these are general considerations and the best choice depends on your specific use case and requirements. Always refer to the official documentation for the most accurate and up-to-date information.
+
+
