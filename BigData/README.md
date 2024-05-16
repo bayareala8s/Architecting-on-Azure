@@ -152,4 +152,4 @@ Azure Storage offers several types of data replication to ensure durability and 
 - `GRS` (Geo-redundant storage): Replicates your data to a secondary region (hundreds of miles away from the primary location of the source data).
 - `RAGRS` (Read-access geo-redundant storage): Same as GRS, but clients can read the data at the secondary location.
 
-In your Terraform code, you can set the `account_replication_type` variable to any of these options, depending on your requirements for data durability and availability.
+
