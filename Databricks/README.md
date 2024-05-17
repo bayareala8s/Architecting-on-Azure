@@ -667,5 +667,60 @@ Managing Delta tables in Unity Catalog involves several best practices to ensure
 Remember, these are general best practices and the optimal strategies for managing your Delta tables in Unity Catalog may depend on your specific use case and requirements. Always refer to the official documentation for the most accurate and up-to-date information.
 
 
+### Difference between Delta Tables and Delta Live Tables
+
+Delta Tables and Delta Live Tables are both features of Databricks, but they serve different purposes and have different capabilities.
+
+**Delta Tables**:
+Delta Tables is a storage layer that brings ACID (Atomicity, Consistency, Isolation, Durability) transactions to Apache Spark and big data workloads. It's an open-source project that provides powerful transactional capabilities to data lakes.
+
+For example, consider a scenario where you have a large dataset of user activity on an e-commerce website. You can use Delta Tables to store this data and perform operations like adding new data, updating existing data, or deleting data. The ACID transactions ensure that these operations are performed reliably, even in the face of failures or concurrent writes.
+
+```python
+from pyspark.sql import SparkSession
+
+# Create a SparkSession
+spark = SparkSession.builder.getOrCreate()
+
+# Write data to a Delta table
+df.write.format("delta").save("/delta/events")
+
+# Read data from a Delta table
+df = spark.read.format("delta").load("/delta/events")
+
+# Update data in a Delta table
+from delta.tables import DeltaTable
+
+deltaTable = DeltaTable.forPath(spark, "/delta/events")
+deltaTable.update(
+  condition = expr("eventType == 'click'"),
+  set = {"count" : expr("count + 1")}
+)
+```
+
+**Delta Live Tables**:
+Delta Live Tables is a feature of Databricks that allows you to build reliable and scalable data pipelines using SQL and Python. It provides a structured way to organize your data transformations and ensures data reliability and accuracy.
+
+For example, consider a scenario where you need to transform the raw user activity data into a format that's suitable for analysis. You can use Delta Live Tables to define a pipeline that reads the raw data, performs the necessary transformations, and writes the transformed data to a new table.
+
+```sql
+CREATE LIVE TABLE events_transformed AS (
+  SELECT
+    userId,
+    eventType,
+    COUNT(*) as eventCount
+  FROM
+    delta.`/delta/events`
+  WHERE
+    eventType IN ('click', 'view')
+  GROUP BY
+    userId,
+    eventType
+)
+```
+
+In this example, the `CREATE LIVE TABLE` command is used to define a Delta Live Table that transforms the raw events data into a format that's suitable for analysis. The transformed data is written to a new table called `events_transformed`.
+
+In summary, while both Delta Tables and Delta Live Tables provide ACID transactions, schema enforcement, and time travel, Delta Live Tables also provide a structured way to organize data transformations and maintain an audit history of all operations. Delta Tables are more about the storage and transactional capabilities, while Delta Live Tables are about building and managing data pipelines.
 
 
