@@ -244,158 +244,137 @@ delta_table.alias("target").merge(
 By following these steps, you can effectively implement both full and incremental data loads from an on-premises Kafka cluster to Azure Databricks, 
 leveraging Delta Lake and Unity Catalog for efficient data management and querying. 
 
-### Data Migration from On-Prem Hadoop Cluster to Azure Databricks
+### Data Migration from On-Prem Hadoop Cluster to Azure Databricks for both full and incremental loads
 
-Migrating data from an on-premises Hadoop cluster to Azure Databricks with Unity Catalog and Delta Tables involves several key steps: extracting data from Hadoop, transferring it to Azure, and then processing and organizing it within Databricks. Below, I'll outline the process and provide guidance on creating a visual architecture diagram.
+To achieve data migration from an on-premises Hadoop cluster to Azure Databricks with Unity Catalog and Delta Tables for both full and incremental loads, follow these steps:
 
-### Step-by-Step Data Migration Process
+### Architecture Overview
+1. **On-premises Hadoop Cluster**: Source data stored in HDFS.
+2. **Azure Blob Storage/ADLS**: Intermediate storage in Azure.
+3. **Azure Databricks**: For data processing and storage using Delta Tables.
+4. **Unity Catalog**: For data organization and management.
+5. **Azure Data Factory**: For orchestrating the data migration process.
 
-#### 1. Extract Data from On-Premises Hadoop Cluster
-
-1. **Install Hadoop Client Tools**:
-   - Ensure you have Hadoop client tools installed on your local machine or a gateway server that can connect to the on-premises Hadoop cluster.
-
-2. **Export Data from HDFS**:
-   - Use Hadoop File System (HDFS) commands to copy data from HDFS to local storage or directly to Azure. For example:
-     ```bash
-     hadoop fs -copyToLocal /path/on/hdfs /local/path
-     ```
-
-#### 2. Transfer Data to Azure
-
-1. **Azure Storage Account**:
-   - Create an Azure Storage Account if you don't already have one. Use either Azure Blob Storage or Azure Data Lake Storage (ADLS).
-
-2. **Upload Data to Azure Storage**:
-   - Use tools like Azure Storage Explorer, AzCopy, or Azure CLI to upload the exported data files to Azure Blob Storage or ADLS.
-
-   Using AzCopy:
-   ```bash
-   azcopy copy '/local/path/to/data' 'https://<storage-account-name>.blob.core.windows.net/<container-name>'
-   ```
-
-#### 3. Load Data into Azure Databricks
-
-1. **Set Up Azure Databricks**:
-   - Create an Azure Databricks workspace and cluster if you haven't already.
-
-2. **Mount Azure Storage in Databricks**:
-   - Mount the Azure Blob Storage or ADLS to your Databricks workspace.
-
-   Example of mounting ADLS:
-   ```python
-   configs = {
-       "fs.azure.account.auth.type": "OAuth",
-       "fs.azure.account.oauth.provider.type": "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider",
-       "fs.azure.account.oauth2.client.id": "<application-id>",
-       "fs.azure.account.oauth2.client.secret": "<application-secret>",
-       "fs.azure.account.oauth2.client.endpoint": "https://login.microsoftonline.com/<directory-id>/oauth2/token"
-   }
-
-   dbutils.fs.mount(
-       source = "abfss://<container-name>@<storage-account-name>.dfs.core.windows.net/",
-       mount_point = "/mnt/<mount-name>",
-       extra_configs = configs
-   )
-   ```
-
-3. **Read Data into Databricks**:
-   - Use Spark to read the data files from the mounted storage into Databricks DataFrames.
-
-   Example of reading a Parquet file:
-   ```python
-   df = spark.read.parquet("/mnt/<mount-name>/data")
-   df.show()
-   ```
-
-4. **Process and Transform Data**:
-   - Perform any required data transformations using Spark DataFrame operations or SQL queries.
-
-5. **Save Data to Delta Lake**:
-   - Save the processed data into Delta Lake for optimized storage and querying.
-
-   Example:
-   ```python
-   df.write.format("delta").mode("overwrite").save("/mnt/<mount-name>/delta/data")
-   ```
-
-#### 4. Organize Data within Unity Catalog
-
-1. **Create Unity Catalog**:
-   - Create a Unity Catalog if it doesn't already exist.
-   - Use SQL commands in Databricks to create the catalog and schemas.
-
-   Example:
-   ```sql
-   CREATE CATALOG IF NOT EXISTS ecomm_app_insights;
-   CREATE SCHEMA IF NOT EXISTS ecomm_app_insights.bronze;
-   ```
-
-2. **Create Delta Tables in Unity Catalog**:
-   - Use SQL commands to create Delta Tables within the Unity Catalog.
-
-   Example:
-   ```sql
-   USE CATALOG ecomm_app_insights;
-   CREATE TABLE IF NOT EXISTS bronze.table_name
-   USING DELTA
-   LOCATION 'abfss://<storage-account-name>@<container-name>.dfs.core.windows.net/delta/table_name';
-   ```
-
-3. **Load Data into Delta Tables**:
-   - Load the data into the Delta Tables using Spark DataFrame operations.
-
-   Example:
-   ```python
-   df.write.format("delta").mode("overwrite").saveAsTable("ecomm_app_insights.bronze.table_name")
-   ```
-
-#### 5. Automate the Process
-
-1. **Scheduling with Databricks Jobs**:
-   - Create Databricks jobs to automate the data migration process. You can schedule these jobs to run at regular intervals.
-
-2. **Data Pipelines with Azure Data Factory**:
-   - Use Azure Data Factory (ADF) to orchestrate the data extraction, transfer, and load processes. ADF can manage the entire ETL pipeline, including triggering Databricks notebooks for processing.
-
-### Example Workflow
-
-Here is an example end-to-end workflow to implement both full and incremental loads:
+### Step-by-Step Process
 
 #### Full Load (Initial Load)
 
-```python
-from pyspark.sql import SparkSession
+1. **Extract Data from Hadoop Cluster**
+   - Use `hdfs dfs -copyToLocal` to extract data from HDFS to a local directory.
+   - Example:
+     ```bash
+     hdfs dfs -copyToLocal /path/on/hdfs /local/path
+     ```
 
-# Initialize Spark session
-spark = SparkSession.builder \
-    .appName("Full Load from Hadoop to Databricks") \
-    .getOrCreate()
+2. **Transfer Data to Azure Blob Storage/ADLS**
+   - Use tools like Azure Storage Explorer, AzCopy, or Azure CLI to upload the data to Azure Blob Storage or Azure Data Lake Storage (ADLS).
+   - Example with AzCopy:
+     ```bash
+     azcopy copy '/local/path' 'https://<storage-account-name>.blob.core.windows.net/<container-name>'
+     ```
 
-# Define the ADLS mount path
-mount_path = "/mnt/<mount-name>"
+3. **Mount Azure Storage in Databricks**
+   - Mount the Azure Blob Storage or ADLS to your Databricks workspace.
+   - Example for mounting ADLS:
+     ```python
+     configs = {
+         "fs.azure.account.auth.type": "OAuth",
+         "fs.azure.account.oauth.provider.type": "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider",
+         "fs.azure.account.oauth2.client.id": "<application-id>",
+         "fs.azure.account.oauth2.client.secret": "<application-secret>",
+         "fs.azure.account.oauth2.client.endpoint": "https://login.microsoftonline.com/<directory-id>/oauth2/token"
+     }
 
-# Read full data from Parquet file
-df = spark.read.parquet(f"{mount_path}/data")
-df.show()
+     dbutils.fs.mount(
+         source = "abfss://<container-name>@<storage-account-name>.dfs.core.windows.net/",
+         mount_point = "/mnt/<mount-name>",
+         extra_configs = configs
+     )
+     ```
 
-# Write data to Delta Lake
-df.write.format("delta").mode("overwrite").save(f"{mount_path}/delta/data")
+4. **Read Data into Databricks**
+   - Use Spark to read the data files from the mounted storage into Databricks DataFrames.
+   - Example:
+     ```python
+     df = spark.read.csv("/mnt/<mount-name>/data", header=True, inferSchema=True)
+     df.show()
+     ```
 
-# Register the Delta table in Unity Catalog
-spark.sql("""
-CREATE CATALOG IF NOT EXISTS ecomm_app_insights;
-CREATE SCHEMA IF NOT EXISTS ecomm_app_insights.bronze;
+5. **Write Data to Delta Lake**
+   - Save the data into Delta Lake for optimized storage and querying.
+   - Example:
+     ```python
+     df.write.format("delta").mode("overwrite").save("/mnt/<mount-name>/delta/table_name")
+     ```
 
-CREATE TABLE IF NOT EXISTS ecomm_app_insights.bronze.data (
-  id STRING,
-  name STRING,
-  value DECIMAL(10, 2)
-)
-USING delta
-LOCATION 'abfss://<storage-account-name>@<container-name>.dfs.core.windows.net/delta/data';
-""")
-```
+6. **Register Delta Table in Unity Catalog**
+   - Use SQL commands to create and register the Delta table in Unity Catalog.
+   - Example:
+     ```sql
+     CREATE CATALOG IF NOT EXISTS ecomm_app_insights;
+     CREATE SCHEMA IF NOT EXISTS ecomm_app_insights.bronze;
 
+     CREATE TABLE IF NOT EXISTS ecomm_app_insights.bronze.table_name (
+       id STRING,
+       name STRING,
+       value DECIMAL(10, 2)
+     )
+     USING delta
+     LOCATION 'abfss://<storage-account-name>@<container-name>.dfs.core.windows.net/delta/table_name';
+     ```
 
+#### Incremental Loads
+
+1. **Identify Changes in Hadoop Cluster**
+   - Use timestamp columns or other mechanisms to identify new or updated records.
+   - Example query to extract incremental data:
+     ```sql
+     SELECT * FROM table WHERE last_modified >= '2022-01-01 00:00:00'
+     ```
+
+2. **Export Incremental Data**
+   - Use `hdfs dfs -copyToLocal` to export the incremental data.
+   - Example:
+     ```bash
+     hdfs dfs -copyToLocal /path/on/hdfs/incremental /local/path/incremental
+     ```
+
+3. **Transfer Incremental Data to Azure**
+   - Use AzCopy or another method to upload the incremental data files to Azure Blob Storage or ADLS.
+   - Example with AzCopy:
+     ```bash
+     azcopy copy '/local/path/incremental' 'https://<storage-account-name>.blob.core.windows.net/<container-name>/incremental'
+     ```
+
+4. **Read Incremental Data into Databricks**
+   - Use Spark to read the incremental data files from the mounted storage into Databricks DataFrames.
+   - Example:
+     ```python
+     incremental_df = spark.read.csv("/mnt/<mount-name>/incremental", header=True, inferSchema=True)
+     incremental_df.show()
+     ```
+
+5. **Merge Incremental Data into Delta Table**
+   - Use Delta Lake’s `MERGE INTO` statement to upsert the incremental data into the Delta table.
+   - Example:
+     ```python
+     from delta.tables import DeltaTable
+
+     # Define the Delta table
+     delta_table = DeltaTable.forPath(spark, "/mnt/<mount-name>/delta/table_name")
+
+     # Merge incremental data into Delta table
+     delta_table.alias("target").merge(
+         incremental_df.alias("source"),
+         "target.id = source.id"  # Use the appropriate key for matching records
+     ).whenMatchedUpdateAll().whenNotMatchedInsertAll().execute()
+     ```
+
+### Automate the Process
+
+1. **Scheduling with Databricks Jobs**
+   - Create Databricks jobs to automate the full and incremental data load processes. Schedule the full load job to run once and the incremental load job to run at regular intervals.
+
+2. **Data Pipelines with Azure Data Factory**
+   - Use Azure Data Factory (ADF) to orchestrate the data extraction, transfer, and load processes. ADF can manage the entire ETL pipeline, including triggering Databricks notebooks for processing.
 
