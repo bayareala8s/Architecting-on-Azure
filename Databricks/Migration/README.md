@@ -377,4 +377,132 @@ To achieve data migration from an on-premises Hadoop cluster to Azure Databricks
 
 2. **Data Pipelines with Azure Data Factory**
    - Use Azure Data Factory (ADF) to orchestrate the data extraction, transfer, and load processes. ADF can manage the entire ETL pipeline, including triggering Databricks notebooks for processing.
+  
+
+### Data Migration from On-Prem DB2 to Azure Databricks for both full and incremental loads
+
+To migrate data from an on-premises DB2 database to Azure Databricks with Unity Catalog and Delta Tables for both full and incremental loads, you need to follow a structured process. This includes extracting data from DB2, transferring it to Azure, processing it in Databricks, and managing it with Unity Catalog and Delta Tables. Here’s a detailed guide:
+
+### Step-by-Step Process
+
+#### 1. Full Load (Initial Load)
+
+1. **Extract Data from DB2**
+   - Use DB2 export utilities or SQL queries to extract data from the DB2 database into flat files (e.g., CSV, TSV) or directly into a staging database.
+   - Example of exporting a table to a CSV file:
+     ```bash
+     db2 "EXPORT TO table_data.csv OF DEL MODIFIED BY NOCHARDEL SELECT * FROM schema.table_name"
+     ```
+
+2. **Transfer Data to Azure Blob Storage/ADLS**
+   - Use tools like Azure Storage Explorer, AzCopy, or Azure CLI to upload the exported data files to Azure Blob Storage or Azure Data Lake Storage (ADLS).
+   - Example with AzCopy:
+     ```bash
+     azcopy copy '/local/path/to/table_data.csv' 'https://<storage-account-name>.blob.core.windows.net/<container-name>/table_data.csv'
+     ```
+
+3. **Mount Azure Storage in Databricks**
+   - Mount the Azure Blob Storage or ADLS to your Databricks workspace.
+   - Example for mounting ADLS:
+     ```python
+     configs = {
+         "fs.azure.account.auth.type": "OAuth",
+         "fs.azure.account.oauth.provider.type": "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider",
+         "fs.azure.account.oauth2.client.id": "<application-id>",
+         "fs.azure.account.oauth2.client.secret": "<application-secret>",
+         "fs.azure.account.oauth2.client.endpoint": "https://login.microsoftonline.com/<directory-id>/oauth2/token"
+     }
+
+     dbutils.fs.mount(
+         source = "abfss://<container-name>@<storage-account-name>.dfs.core.windows.net/",
+         mount_point = "/mnt/<mount-name>",
+         extra_configs = configs
+     )
+     ```
+
+4. **Read Data into Databricks**
+   - Use Spark to read the data files from the mounted storage into Databricks DataFrames.
+   - Example:
+     ```python
+     df = spark.read.csv("/mnt/<mount-name>/table_data.csv", header=True, inferSchema=True)
+     df.show()
+     ```
+
+5. **Write Data to Delta Lake**
+   - Save the data into Delta Lake for optimized storage and querying.
+   - Example:
+     ```python
+     df.write.format("delta").mode("overwrite").save("/mnt/<mount-name>/delta/table_name")
+     ```
+
+6. **Register Delta Table in Unity Catalog**
+   - Use SQL commands to create and register the Delta table in Unity Catalog.
+   - Example:
+     ```sql
+     CREATE CATALOG IF NOT EXISTS ecomm_app_insights;
+     CREATE SCHEMA IF NOT EXISTS ecomm_app_insights.bronze;
+
+     CREATE TABLE IF NOT EXISTS ecomm_app_insights.bronze.table_name (
+       id STRING,
+       name STRING,
+       value DECIMAL(10, 2)
+     )
+     USING delta
+     LOCATION 'abfss://<storage-account-name>@<container-name>.dfs.core.windows.net/delta/table_name';
+     ```
+
+#### 2. Incremental Loads
+
+1. **Identify Changes in DB2**
+   - Use Change Data Capture (CDC) mechanisms, triggers, or timestamp columns to identify new or updated records.
+   - Example of querying incremental data using a timestamp column:
+     ```sql
+     SELECT * FROM schema.table_name WHERE last_modified >= '2022-01-01 00:00:00'
+     ```
+
+2. **Export Incremental Data**
+   - Export the incremental data from DB2 to a CSV file.
+   - Example:
+     ```bash
+     db2 "EXPORT TO incremental_data.csv OF DEL MODIFIED BY NOCHARDEL SELECT * FROM schema.table_name WHERE last_modified >= '2022-01-01 00:00:00'"
+     ```
+
+3. **Transfer Incremental Data to Azure**
+   - Use AzCopy or another method to upload the incremental data files to Azure Blob Storage or ADLS.
+   - Example with AzCopy:
+     ```bash
+     azcopy copy '/local/path/to/incremental_data.csv' 'https://<storage-account-name>.blob.core.windows.net/<container-name>/incremental_data.csv'
+     ```
+
+4. **Read Incremental Data into Databricks**
+   - Use Spark to read the incremental data files from the mounted storage into Databricks DataFrames.
+   - Example:
+     ```python
+     incremental_df = spark.read.csv("/mnt/<mount-name>/incremental_data.csv", header=True, inferSchema=True)
+     incremental_df.show()
+     ```
+
+5. **Merge Incremental Data into Delta Table**
+   - Use Delta Lake’s `MERGE INTO` statement to upsert the incremental data into the Delta table.
+   - Example:
+     ```python
+     from delta.tables import DeltaTable
+
+     # Define the Delta table
+     delta_table = DeltaTable.forPath(spark, "/mnt/<mount-name>/delta/table_name")
+
+     # Merge incremental data into Delta table
+     delta_table.alias("target").merge(
+         incremental_df.alias("source"),
+         "target.id = source.id"  # Use the appropriate key for matching records
+     ).whenMatchedUpdateAll().whenNotMatchedInsertAll().execute()
+     ```
+
+### Automate the Process
+
+1. **Scheduling with Databricks Jobs**
+   - Create Databricks jobs to automate the full and incremental data load processes. Schedule the full load job to run once and the incremental load job to run at regular intervals.
+
+2. **Data Pipelines with Azure Data Factory**
+   - Use Azure Data Factory (ADF) to orchestrate the data extraction, transfer, and load processes. ADF can manage the entire ETL pipeline, including triggering Databricks notebooks for processing.
 
