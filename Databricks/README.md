@@ -239,7 +239,7 @@ Implementing data governance in Azure Databricks involves several best practices
 
 ### Components in the Unity Catalog architecture
 
-Certainly! The Unity Catalog architecture typically consists of several interconnected components, each serving a specific purpose in managing metadata and facilitating interactions with data assets. Here's a detailed description of each component:
+The Unity Catalog architecture typically consists of several interconnected components, each serving a specific purpose in managing metadata and facilitating interactions with data assets. Here's a detailed description of each component:
 
 1. **User Interface (UI)**:
    - The User Interface component provides a graphical interface for users to interact with the Unity Catalog. This UI could be a web-based application, a desktop client, or integrated into other data management tools.
