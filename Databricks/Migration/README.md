@@ -505,4 +505,158 @@ To migrate data from an on-premises DB2 database to Azure Databricks with Unity 
 
 2. **Data Pipelines with Azure Data Factory**
    - Use Azure Data Factory (ADF) to orchestrate the data extraction, transfer, and load processes. ADF can manage the entire ETL pipeline, including triggering Databricks notebooks for processing.
+  
+### Achieve network connectivity from On-Prem to Azure DataBricks
+
+To achieve network connectivity from an on-premises environment to Azure Databricks, you can use several Azure services and configurations to establish a secure and reliable connection. Here’s a detailed guide on how to set up this connectivity:
+
+### Network Connectivity Options
+
+1. **Site-to-Site VPN**
+2. **Azure ExpressRoute**
+3. **Virtual Network (VNet) Peering**
+4. **Private Link**
+
+### 1. Site-to-Site VPN
+
+A Site-to-Site VPN establishes a secure connection between your on-premises network and your Azure virtual network (VNet). This is a cost-effective solution for extending your on-premises network to Azure.
+
+#### Steps:
+
+1. **Create a Virtual Network (VNet) in Azure**
+   - In the Azure portal, navigate to “Virtual Networks” and create a new VNet.
+   - Configure the address space and subnets as needed.
+
+2. **Create a VPN Gateway**
+   - In the Azure portal, navigate to “Create a resource” and select “Virtual Network Gateway.”
+   - Configure the gateway settings, including the SKU, virtual network, and public IP address.
+
+3. **Configure On-Premises VPN Device**
+   - Configure your on-premises VPN device with the VPN gateway settings provided by Azure.
+   - Azure provides detailed configuration scripts for various VPN devices.
+
+4. **Create a Local Network Gateway**
+   - In the Azure portal, create a Local Network Gateway with the on-premises public IP address and address space.
+
+5. **Create a VPN Connection**
+   - In the Azure portal, navigate to the VPN gateway and create a new connection.
+   - Select the Local Network Gateway and configure the connection settings (e.g., shared key).
+
+### 2. Azure ExpressRoute
+
+Azure ExpressRoute provides a private connection between your on-premises network and Azure. It offers higher reliability, faster speeds, and lower latencies compared to VPN.
+
+#### Steps:
+
+1. **Create an ExpressRoute Circuit**
+   - In the Azure portal, navigate to “Create a resource” and select “ExpressRoute.”
+   - Configure the ExpressRoute circuit settings, including the SKU, peering location, and bandwidth.
+
+2. **Connect to a Service Provider**
+   - Work with an ExpressRoute service provider to establish the connection between your on-premises network and the ExpressRoute circuit.
+
+3. **Configure Routing**
+   - Configure BGP peering between your on-premises network and the Azure VNet.
+   - Set up Private Peering and ensure your Azure VNet is connected to the ExpressRoute circuit.
+
+### 3. Virtual Network (VNet) Peering
+
+VNet Peering connects two Azure VNets, allowing resources in both VNets to communicate with each other.
+
+#### Steps:
+
+1. **Create a Virtual Network (VNet) in Azure**
+   - In the Azure portal, navigate to “Virtual Networks” and create a new VNet.
+   - Configure the address space and subnets as needed.
+
+2. **Create VNet Peering**
+   - In the Azure portal, navigate to the VNet you want to peer with.
+   - Select “Peerings” and create a new peering connection.
+   - Configure the peering settings, including the remote VNet and connection settings.
+
+### 4. Private Link
+
+Private Link enables you to access Azure services over a private endpoint in your VNet, providing secure connectivity without exposing the service to the public internet.
+
+#### Steps:
+
+1. **Create a Private Endpoint**
+   - In the Azure portal, navigate to “Create a resource” and select “Private Link.”
+   - Configure the private endpoint settings, including the target resource (e.g., Azure Databricks) and virtual network.
+
+2. **Approve Private Endpoint Connection**
+   - The target resource owner must approve the private endpoint connection.
+   - This can be done in the Azure portal under the target resource’s private endpoint connections settings.
+
+### Detailed Steps for Site-to-Site VPN (Most Common)
+
+#### Step-by-Step Guide
+
+1. **Create a Virtual Network (VNet) in Azure**
+   - In the Azure portal, go to "Create a resource" > "Networking" > "Virtual Network."
+   - Configure the address space and subnets as needed.
+
+2. **Create a VPN Gateway**
+   - In the Azure portal, go to "Create a resource" > "Networking" > "Virtual Network Gateway."
+   - Configure the gateway settings, including the SKU (basic, standard, etc.), virtual network, and public IP address.
+
+3. **Configure On-Premises VPN Device**
+   - Configure your on-premises VPN device using the settings provided by Azure.
+   - Azure provides configuration scripts for various VPN devices. Download the configuration script from the Azure portal.
+
+4. **Create a Local Network Gateway**
+   - In the Azure portal, go to "Create a resource" > "Networking" > "Local Network Gateway."
+   - Configure the settings with the on-premises public IP address and address space.
+
+5. **Create a VPN Connection**
+   - In the Azure portal, navigate to the VPN gateway you created.
+   - Go to "Connections" and create a new connection.
+   - Select the Local Network Gateway and configure the connection settings (e.g., shared key).
+
+### Sample Network Diagram
+
+Here’s a visual representation of the setup for Site-to-Site VPN connectivity:
+
+```
++-----------------------+       +----------------------------+
+| On-Premises Network   |       | Azure Virtual Network (VNet)|
+|                       |       |                            |
+| +-------------------+ |       | +------------------------+ |
+| | On-Premises VPN   | |       | | Azure VPN Gateway      | |
+| | Device            | |       | |                        | |
+| +--------+----------+ |       | +--------+---------------+ |
+|          |            |       |          |                 |
+|          |            |       |          |                 |
++----------+------------+       +----------+-----------------+
+           |                               |
+           | Site-to-Site VPN Connection   |
+           | (IPSec Tunnel)                |
+           |                               |
++----------+------------+       +----------+-----------------+
+|   Local Network       |       |      Virtual Network        |
+|   Gateway             |       |      Gateway                |
+|   (On-Premises)       |       |      (Azure)                |
++-----------------------+       +----------------------------+
+```
+
+### Steps in Azure Databricks
+
+1. **Mount Azure Blob Storage/ADLS**
+   - Use dbutils.fs.mount to mount the storage.
+
+2. **Read Data in Databricks**
+   - Use Spark to read the data.
+
+3. **Write Data to Delta Lake**
+   - Save the data into Delta Lake.
+
+4. **Register Delta Table in Unity Catalog**
+   - Use SQL commands to create and register the Delta table in Unity Catalog.
+
+5. **Automate the Process**
+   - Use Databricks Jobs or Azure Data Factory for automation.
+
+### Conclusion
+
+By following these steps, you can establish network connectivity between your on-premises environment and Azure Databricks, enabling seamless data migration and processing using Unity Catalog and Delta Tables. 
 
