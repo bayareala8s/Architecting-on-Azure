@@ -143,7 +143,7 @@ Key features of Azure Purview include:
 
 By providing these capabilities, Azure Purview helps organizations achieve a more complete understanding of their data, improve compliance, and make better decisions based on high-quality, well-governed data.
 
-### Azure rtorage data replication types
+### Azure storage data replication types
 
 Azure Storage offers several types of data replication to ensure durability and high availability. Here are the options:
 
