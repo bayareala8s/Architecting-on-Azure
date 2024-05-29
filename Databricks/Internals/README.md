@@ -1,4 +1,4 @@
-Sure! Here's a step-by-step explanation of how Databricks works internally when you submit a PySpark program:
+Here's a step-by-step explanation of how Databricks works internally when you submit a PySpark program:
 
 ### Step 1: **Submit PySpark Program through Notebook**
 
